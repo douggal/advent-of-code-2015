@@ -41,7 +41,7 @@ object DayXX {
         p
     }
 
-    private def runPuzzle(title: String, runType: Int): Unit =
+    private def runPuzzle(title: String, runType: Int): Unit = {
 
         println(s"--- $title ---")
         println(s"--- $puzzleTitle ---")
@@ -49,6 +49,7 @@ object DayXX {
             println("--- USING TEST DATA ---")
         else
             println("--- USING REAL INPUT DATA ---")
+        println(s"Start Timestamp ${java.time.ZonedDateTime.now()}")
 
         // Puzzle Input Data File
         val filename = if (runType == 1) testData else realData
@@ -67,8 +68,8 @@ object DayXX {
             println(line)
         }*/
 
+
         println("\nData Quality Control:")
-        println(s"Start Timestamp ${java.time.ZonedDateTime.now()}")
         println(s"Input file name: $filename")
         println(s"Each line is a: ${input.getClass}")
         println(s"Number lines: ${input.length}")
@@ -78,17 +79,23 @@ object DayXX {
         println("End QC on input file\n")
 
         // Part One
-        println(s"${} Part 1 TBD")
+        println(s"Part 1 TBD")
+        val part1T0 = System.nanoTime()
 
-        // parse dots
 
-
-        // parse instructions
+        val part1T1 = System.nanoTime()
+        println(s"Elapsed time ${part1T1 - part1T0} nanoseconds.")
 
 
         // Part Two
+        println(s"Part 2  [TBD]")
+        val part2T0 = System.nanoTime()
 
-        println(s"$title Part 2  [TBD]")
+
+        val part2T1 = System.nanoTime()
+        println(s"Elapsed time ${part2T1 - part2T0} nanoseconds.")
+
 
         println(s"End at ${java.time.ZonedDateTime.now()}")
+    }
 }

@@ -1,4 +1,5 @@
 import java.io.File
+import scala.collection.mutable.ArrayBuffer
 
 /** Advent of Code 2015 Day 1
  *
@@ -41,7 +42,7 @@ object Day01 {
         p
     }
 
-    private def runPuzzle(title: String, runType: Int): Unit =
+    private def runPuzzle(title: String, runType: Int): Unit = {
 
         println(s"--- $title ---")
         println(s"--- $puzzleTitle ---")
@@ -67,30 +68,45 @@ object Day01 {
             println(line)
         }*/
 
-        println("\nData Quality Control:")
         println(s"Start Timestamp ${java.time.ZonedDateTime.now()}")
+
+        println("\nData Quality Control:")
         println(s"Input file name: $filename")
         println(s"Each line is a: ${input.getClass}")
         println(s"Number lines: ${input.length}")
         println(s"Number items per line: ${input.head.count(_ => true)}")
-        println(s"Input first line: ${input.head}")
+        println(s"Input first line: ${input.head.take(25)}")
         if (input.size > 1) println(s"Input last line: ${input.tail.last}")
         println("End QC on input file\n")
 
         // Part One
-        println(s"${} Part 1 TBD")
+        println(s"Part 1: To what floor do the instructions take Santa?")
+        val part1T0 = System.nanoTime()
 
-        // parse dots
+        val inputSeq = input(0).toVector
+        val floor = inputSeq.map(x => if (x == '(') then 1 else -1).sum
+        println(s"Santa arrives at floor $floor")
 
-
-        // parse instructions
+        println(s"Elapsed time ${(System.nanoTime() - part1T0)/1e6} milliseconds.\n")
 
 
         // Part Two
+        println(s"Part 2: What is the position of the character that causes Santa to first enter the basement?")
+        val floorInstructions = inputSeq.map(x => if (x == '(') then 1 else -1)
 
-        println(s"$title Part 2  [TBD]")
+        var floors = ArrayBuffer[Int](0)
+        for (i <- 0 to floorInstructions.length-1) {
+            floors.append(floors(i) + floorInstructions(i))
+        }
+        val answerP2 = floors.takeWhile(_ != -1).length
+        println(answerP2)
+
+        val part2T0 = System.nanoTime()
+
+
+        println(s"Elapsed time ${(System.nanoTime() - part2T0)/1e6} milliseconds.")
 
         println(s"End at ${java.time.ZonedDateTime.now()}")
-
+    }
 
 }
