@@ -47,3 +47,30 @@ build/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Add SBT, etc ref:
+# https://alvinalexander.com/source-code/scala/sample-gitignore-file-scala-sbt-intellij-eclipse/
+# https://users.scala-lang.org/t/solved-should-i-add-bsp-directory-in-gitignore/6921
+#
+# sbt
+project/project/
+project/target/
+target/
+/.bsp/sbt.json
+
+# scala 3
+.tasty
+
+# bloop and metals
+.bloop
+.bsp
+.metals
+project/metals.sbt
+
+# other?
+.history
+.scala_dependencies
+.cache-main
+
+# general
+*.class

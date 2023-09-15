@@ -1,31 +1,54 @@
 import java.io.File
 
-class Day01(val runType: Int):
+/** Advent of Code 2015 Day XX: TEMPLATE for each day
+ *
+ * Defines a class, its companion object and runner method for
+ * the AoC Day XX puzzles.
+ */
+class DayXX:
 
-    def title: String = Day01.title
-    def run: Unit = Day01.runPuzzle(runType)
+    var title: String = "Default"
+    var runType: Int = 1 // Default to test data
 
-    override def toString: String =
-        s"$title"
+    def run = DayXX.runPuzzle(title, runType)
 
-end Day01
+    override def toString: String = s"Class ${DayXX.puzzleTitle}"
 
-object Day01 {
+end DayXX
 
-    private val title = "AoC 2015 Day 1"
-    private val testData: String = "day01TestData.txt"
-    private val realData: String = "day01Input.txt"
+object DayXX {
 
-    private def runPuzzle(runType:Int): Unit =
+    // created 9/8/2023
+    // https://adventofcode.com/2015/day/XX
 
-        // created 9/8/2023
-        // https://adventofcode.com/2015/day/1
+    val puzzleTitle = "Day 1: Not Quite Lisp"
+    val day = "dayXX"
+    private val testData: String = s"${day}TestData.txt"
+    private val realData: String = s"${day}Input.txt"
 
-        println(s"--- Day 1: Not Quite Lisp ---")
+    // a one-arg constructor
+    def apply(title: String): DayXX = {
+        var p = new DayXX()
+        p.title = title
+        p
+    }
+
+    // a two-arg constructor
+    def apply(title: String, runType: Int): DayXX = {
+        var p = new DayXX()
+        p.title = title
+        p.runType = runType
+        p
+    }
+
+    private def runPuzzle(title: String, runType: Int): Unit =
+
+        println(s"--- $title ---")
+        println(s"--- $puzzleTitle ---")
         if (runType == 1)
-            println("--- USING TEST DATA")
+            println("--- USING TEST DATA ---")
         else
-            println("--- USING REAL INPUT DATA")
+            println("--- USING REAL INPUT DATA ---")
 
         // Puzzle Input Data File
         val filename = if (runType == 1) testData else realData
@@ -55,7 +78,7 @@ object Day01 {
         println("End QC on input file\n")
 
         // Part One
-        println(s"$title Part 1 TBD")
+        println(s"${} Part 1 TBD")
 
         // parse dots
 
@@ -68,6 +91,4 @@ object Day01 {
         println(s"$title Part 2  [TBD]")
 
         println(s"End at ${java.time.ZonedDateTime.now()}")
-
-
 }
