@@ -1,43 +1,43 @@
 import java.io.File
-import java.time.{Instant, Duration, ZonedDateTime}
+import java.time.{Duration, Instant, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
 
-/** Advent of Code 2015 Day 1
+/** Advent of Code 2015 Day 2
  *
  * Defines a class, its companion object and runner method for
- * the AoC Day 1 puzzles.
+ * the AoC Day 2 puzzles.
  */
-class Day01:
+class Day02:
 
     var title: String = "Default"
     var runType: Int = 1 // Default to test data
 
-    def run = Day01.runPuzzle(title, runType)
+    def run = Day02.runPuzzle(title, runType)
 
-    override def toString: String = s"Class ${Day01.puzzleTitle}"
+    override def toString: String = s"Class ${Day02.puzzleTitle}"
 
-end Day01
+end Day02
 
-object Day01 {
+object Day02 {
 
     // created 9/8/2023
     // https://adventofcode.com/2015/day/1
 
-    val puzzleTitle = "Day 1: Not Quite Lisp"
-    val day = "day01"
+    val puzzleTitle = "Day 2: I Was Told There Would Be No Math"
+    val day = "Day02"
     private val testData: String = s"${day}TestData.txt"
     private val realData: String = s"${day}Input.txt"
 
     // a one-arg constructor
-    def apply(title: String): Day01 = {
-        var p = new Day01()
+    def apply(title: String): Day02 = {
+        var p = new Day02()
         p.title = title
         p
     }
 
     // a two-arg constructor
-    def apply(title: String, runType: Int): Day01 = {
-        var p = new Day01()
+    def apply(title: String, runType: Int): Day02 = {
+        var p = new Day02()
         p.title = title
         p.runType = runType
         p
@@ -81,31 +81,47 @@ object Day01 {
         println("End QC on input file\n")
 
         // Part One
-        println(s"Part 1: To what floor do the instructions take Santa?")
+        println(s"Part 1: How many total square feet of wrapping paper should they order?")
         val p1T0 = Instant.now()
 
-        val inputSeq = input(0).toVector
-        val floor = inputSeq.map(x => if (x == '(') then 1 else -1).sum
-        println(s"Santa arrives at floor $floor")
+        val totals = ArrayBuffer[Int]()
+
+        for (li <- input) do {
+            val sides = li.split("x").map(_.toInt)
+            val areas = Vector[Int](sides(0) * sides(1), sides(1) * sides(2), sides(0)*sides(2))
+            val smallest = areas.min
+            val total = areas.map(_ * 2).sum
+            totals.append(total + smallest)
+            //println(sides.mkString(","))
+            //println(areas.mkString(","))
+            //println(s"smallest ${smallest}, total ${total}")
+        }
+        //println(totals.mkString(","))
+        println(s"${totals.sum} square feet of paper is needed.")
+
 
         val delta1 = Duration.between(p1T0, Instant.now())
-        println(s"Elapsed time approx ${delta1.toMillis} milliseconds\n")
+        println(s"Part 1 Elapsed time approx ${delta1.toMillis} milliseconds\n")
 
 
         // Part Two
-        println(s"Part 2: What is the position of the character that causes Santa to first enter the basement?")
+        println(s"Part 2: How many total feet of ribbon should they order?")
         val p2T0 = Instant.now()
-        val floorInstructions = inputSeq.map(x => if (x == '(') then 1 else -1)
 
-        var floors = ArrayBuffer[Int](0)
-        for (i <- 0 to floorInstructions.length-1) {
-            floors.append(floors(i) + floorInstructions(i))
+        val smallests = ArrayBuffer[Int]()  // Smallest Perimeter each present
+        val volumes = ArrayBuffer[Int]()   //  Volumne of each present
+
+        for (li <- input) do {
+            val sides = li.split("x").map(_.toInt)
+            val small = sides.sortWith(_ < _).take(2).map(x => x + x).sum
+            smallests.append(small)
+            volumes.append(sides.product)
         }
-        val answerP2 = floors.takeWhile(_ != -1).length
-        println(answerP2)
+        val feetRibbon = (volumes zip smallests).map(x => x._1 + x._2).sum
+        println(s"${feetRibbon} feet of ribbon is needed.")
 
         val delta2 = Duration.between(p2T0, Instant.now())
-        println(f"Elapsed time approx ${delta2.toMillis} milliseconds")
+        println(f"Part 2 Elapsed time approx ${delta2.toMillis} milliseconds")
 
         println(s"\nEnd at ${ZonedDateTime.now()}")
     }
