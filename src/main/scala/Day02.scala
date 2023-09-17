@@ -81,26 +81,47 @@ object Day02 {
         println("End QC on input file\n")
 
         // Part One
-        println(s"Part 1: How many total square feet of wrapping paper should they order??")
+        println(s"Part 1: How many total square feet of wrapping paper should they order?")
         val p1T0 = Instant.now()
 
+        val totals = ArrayBuffer[Int]()
+
         for (li <- input) do {
-            val a = li.split("x").map(_.toInt)
-            println(s"L: ${a(0)} x W: ${a(1)} x H: ${a(2)}")
+            val sides = li.split("x").map(_.toInt)
+            val areas = Vector[Int](sides(0) * sides(1), sides(1) * sides(2), sides(0)*sides(2))
+            val smallest = areas.min
+            val total = areas.map(_ * 2).sum
+            totals.append(total + smallest)
+            //println(sides.mkString(","))
+            //println(areas.mkString(","))
+            //println(s"smallest ${smallest}, total ${total}")
         }
+        //println(totals.mkString(","))
+        println(s"${totals.sum} square feet of paper is needed.")
 
 
         val delta1 = Duration.between(p1T0, Instant.now())
-        println(s"Elapsed time approx ${delta1.toMillis} milliseconds\n")
+        println(s"Part 1 Elapsed time approx ${delta1.toMillis} milliseconds\n")
 
 
         // Part Two
-        println(s"Part 2: ?")
+        println(s"Part 2: How many total feet of ribbon should they order?")
         val p2T0 = Instant.now()
 
+        val smallests = ArrayBuffer[Int]()  // Smallest Perimeter each present
+        val volumes = ArrayBuffer[Int]()   //  Volumne of each present
+
+        for (li <- input) do {
+            val sides = li.split("x").map(_.toInt)
+            val small = sides.sortWith(_ < _).take(2).map(x => x + x).sum
+            smallests.append(small)
+            volumes.append(sides.product)
+        }
+        val feetRibbon = (volumes zip smallests).map(x => x._1 + x._2).sum
+        println(s"${feetRibbon} feet of ribbon is needed.")
 
         val delta2 = Duration.between(p2T0, Instant.now())
-        println(f"Elapsed time approx ${delta1.toMillis} milliseconds")
+        println(f"Part 2 Elapsed time approx ${delta2.toMillis} milliseconds")
 
         println(s"\nEnd at ${ZonedDateTime.now()}")
     }

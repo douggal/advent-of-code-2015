@@ -105,7 +105,7 @@ object Day01 {
         println(answerP2)
 
         val delta2 = Duration.between(p2T0, Instant.now())
-        println(f"Elapsed time approx ${delta1.toMillis} milliseconds")
+        println(f"Elapsed time approx ${delta2.toMillis} milliseconds")
 
         println(s"\nEnd at ${ZonedDateTime.now()}")
     }

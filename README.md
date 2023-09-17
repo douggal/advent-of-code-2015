@@ -8,10 +8,11 @@ Advent of Code Website:  [Advent of Code](https://adventofcode.com)
 My solution to each day's puzzles in Scala v3.3.1 unless otherwise noted.
 
 1. Day  1: Not Quite Lisp
-2. 
+2. Day 2: I Was Told There Would Be No Math
+3. 
 
 ### Notes
-#### Day 01
+#### Day 1
 ```text
 Part 1: To what floor do the instructions take Santa?
 Santa arrives at floor 138
@@ -19,5 +20,15 @@ Elapsed time approx 5 milliseconds
 
 Part 2: What is the position of the character that causes Santa to first enter the basement?
 1771
-Elapsed time approx 5 milliseconds
+Elapsed time approx 14 milliseconds
+```
+#### Day 2
+```text
+Part 1: How many total square feet of wrapping paper should they order?
+1588178 square feet of paper is needed.
+Part 1 Elapsed time approx 23 milliseconds
+
+Part 2: How many total feet of ribbon should they order?
+3783758 feet of ribbon is needed.
+Part 2 Elapsed time approx 10 milliseconds
 ```

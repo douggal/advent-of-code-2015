@@ -6,13 +6,13 @@ def main(): Unit = {
     // runType = 1 for test data
     //         = 2 for real data
 
-    // Which day's puzzle to rn?
+    // Which day's puzzle to run?
     val day = 2
-    val runType = 1
+    val runType = 2
 
     // Implement each day's puzzle
-    val d1 = Day01("AoC 2015 Day 1", runType)
     val d2 = Day02("AoC 2015 Day 2", runType)
+    val d1 = Day01("AoC 2015 Day 1", runType)
 
     // Run the selected day's puzzle
     day match {
