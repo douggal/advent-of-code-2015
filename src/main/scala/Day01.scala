@@ -1,4 +1,5 @@
 import java.io.File
+import java.time.{Instant, Duration, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
 
 /** Advent of Code 2015 Day 1
@@ -47,9 +48,9 @@ object Day01 {
         println(s"--- $title ---")
         println(s"--- $puzzleTitle ---")
         if (runType == 1)
-            println("--- USING TEST DATA ---")
+            println("--- USING TEST DATA ---\n")
         else
-            println("--- USING REAL INPUT DATA ---")
+            println("--- USING REAL INPUT DATA ---\n")
 
         // Puzzle Input Data File
         val filename = if (runType == 1) testData else realData
@@ -68,7 +69,7 @@ object Day01 {
             println(line)
         }*/
 
-        println(s"Start Timestamp ${java.time.ZonedDateTime.now()}")
+        println(s"Start Timestamp ${ZonedDateTime.now()}")
 
         println("\nData Quality Control:")
         println(s"Input file name: $filename")
@@ -81,17 +82,19 @@ object Day01 {
 
         // Part One
         println(s"Part 1: To what floor do the instructions take Santa?")
-        val part1T0 = System.nanoTime()
+        val p1T0 = Instant.now()
 
         val inputSeq = input(0).toVector
         val floor = inputSeq.map(x => if (x == '(') then 1 else -1).sum
         println(s"Santa arrives at floor $floor")
 
-        println(s"Elapsed time ${(System.nanoTime() - part1T0)/1e6} milliseconds.\n")
+        val delta1 = Duration.between(p1T0, Instant.now())
+        println(s"Elapsed time approx ${delta1.toMillis} milliseconds\n")
 
 
         // Part Two
         println(s"Part 2: What is the position of the character that causes Santa to first enter the basement?")
+        val p2T0 = Instant.now()
         val floorInstructions = inputSeq.map(x => if (x == '(') then 1 else -1)
 
         var floors = ArrayBuffer[Int](0)
@@ -101,12 +104,10 @@ object Day01 {
         val answerP2 = floors.takeWhile(_ != -1).length
         println(answerP2)
 
-        val part2T0 = System.nanoTime()
+        val delta2 = Duration.between(p2T0, Instant.now())
+        println(f"Elapsed time approx ${delta1.toMillis} milliseconds")
 
-
-        println(s"Elapsed time ${(System.nanoTime() - part2T0)/1e6} milliseconds.")
-
-        println(s"End at ${java.time.ZonedDateTime.now()}")
+        println(s"\nEnd at ${ZonedDateTime.now()}")
     }
 
 }
