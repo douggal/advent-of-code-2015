@@ -80,47 +80,82 @@ object Day03 {
         if (input.size > 1) println(s"Input last line: ${input.tail.last}")
         println("End QC on input file\n")
 
+        // Commmon to both parts
+        val origin = Tuple2[Int,Int](0, 0)
+
+        def newLocation(c: Char, o: Tuple2[Int, Int]): Tuple2[Int, Int] = {
+            c match
+                case '<' => (o._1 + -1, o._2)
+                case '^' => (o._1, o._2 + 1)
+                case '>' => (o._1 + 1, o._2)
+                case 'v' => (o._1, o._2 + -1)
+        }
+
         // Part One
         println(s"Part 1: How many houses receive at least one present?")
         val p1T0 = Instant.now()
 
-        // represent each node as a 2-tuple (x, y)
-        // add each node to a Map with key (x, y) and value runnint count of deliveries
+        // represent each house visited as a 2-tuple (x, y)
+        // add each node to a Map with key (x, y) and its value is the running count of deliveries
+        val houses = scala.collection.mutable.Map[(Int, Int),Int](origin -> 1)
 
-        val origin = Tuple2[Int,Int](0, 0)
-        val deliveries = scala.collection.mutable.Map[(Int, Int),Int](origin -> 1)
+        // List of (x,y) coord (the "address") of each house
+        //  - save whole list for visualizations
+        var addresses = List(origin)
+        for (c <- input(0)) do
+            addresses = newLocation(c, addresses.head) :: addresses
 
-        var c = origin
-        for (m <- input(0)) do
-            m match
-                case '<' => c = (c._1 + -1, c._2)
-                case '^' => c = (c._1, c._2 + 1)
-                case '>' => c = (c._1+1, c._2)
-                case 'v' => c = (c._1, c._2 + -1)
-
-            if (deliveries.contains(c))
-                deliveries(c) += 1
+            if (houses.contains(addresses.head))
+                houses(addresses.head) += 1
             else
-                deliveries += (c -> 1)
+                houses += (addresses.head -> 1)
 
-        val moreThanOne = deliveries.values.toVector
-        val answerP1 = moreThanOne.count(_ => true)  // count not sum, read carefully :)
+        val answerP1 = houses.values.toVector.count(_ => true)  // count not sum, read carefully :)
         println(s"Answer $answerP1")
-
-        // 1762 too low
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 elased time approx ${delta1.toMillis} milliseconds\n")
 
 
         // Part Two
-        println(s"Part 2: ")
+        println(s"Part 2: with Santa and Robo-Santa delivering how many houses receive at least one present?")
         val p2T0 = Instant.now()
+
+        // Addresses of houses visited
+        var santaVisted = List(origin)  // Santa
+        var roboVisited = List(origin)  // Robo-Santa
+
+        // Houses visited: represent each house visited as a 2-tuple (x, y)
+        // add each node to a Map with key (x, y) and its value is the running count of deliveries
+        val santaHouses = scala.collection.mutable.Map[(Int, Int),Int](origin -> 1)  // Santa
+        val roboHouses = scala.collection.mutable.Map[(Int, Int),Int](origin -> 1) // Robo-Santa
+
+        // List of indexes of each stop along the way in the input string
+        // Even integer index = Santa, Odd integer index = Robo-Santa
+        val is = (0 until input(0).length).toList
+        for (i <- is) do
+            val c = input(0)(i)
+            if i % 2 == 0 then
+                // Santa
+                santaVisted = newLocation(c, santaVisted.head) :: santaVisted
+                if (santaHouses.contains(santaVisted.head))
+                    santaHouses(santaVisted.head) += 1
+                else
+                    santaHouses += (santaVisted.head -> 1)
+            else
+                // Robo-Santa
+                roboVisited = newLocation(c, roboVisited.head) :: roboVisited
+                if (houses.contains(roboVisited.head))
+                    roboHouses(roboVisited.head) += 1
+                else
+                    roboHouses += (roboVisited.head -> 1)
+
+        val answerP2 = santaHouses.size + roboHouses.size - 1  // -1 = both start at same location so there's one extra in the sum
+        println(s"Answer $answerP2")
 
         val delta2 = Duration.between(p2T0, Instant.now())
         println(f"Part 2 elapsed time approx ${delta2.toMillis} milliseconds")
 
         println(s"\nEnd at ${ZonedDateTime.now()}")
     }
-
 }
