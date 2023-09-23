@@ -163,5 +163,15 @@ object Day03 {
         println(f"Part 2 elapsed time approx ${delta2.toMillis} milliseconds")
 
         println(s"\nEnd at ${ZonedDateTime.now()}")
+
+        // errata...for visualation with Excel chart
+        println("\nPart 1 Santa:")
+        for (k, v) <- addresses do println(s"$k,$v, ${houses((k,v))}")
+        println("\nPart 2: Santa")
+        //for (k, v) <- santaList do println(s"$k,$v")
+        println("\nPart 2: Robo-Santa")
+        //for (k, v) <- roboList do println(s"$k,$v")
+
+
     }
 }

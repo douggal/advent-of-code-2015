@@ -41,3 +41,4 @@ Part 1 elased time approx 20 milliseconds
 Part 2: with Santa and Robo-Santa delivering how many houses receive at least one present?  Answer 2631
 Part 2 elapsed time approx 9 milliseconds
 ```
+![Part 1 Visual](visualizations%2FAoC_2015_Day3_Part1_small.png)
