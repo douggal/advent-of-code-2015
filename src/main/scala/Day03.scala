@@ -97,13 +97,14 @@ object Day03 {
                 case '^' => c = (c._1, c._2 + 1)
                 case '>' => c = (c._1+1, c._2)
                 case 'v' => c = (c._1, c._2 + -1)
+
             if (deliveries.contains(c))
                 deliveries(c) += 1
             else
                 deliveries += (c -> 1)
 
         val moreThanOne = deliveries.values.toVector
-        val answerP1 = moreThanOne.count(_ > 1)
+        val answerP1 = moreThanOne.count(_ => true)  // count not sum, read carefully :)
         println(s"Answer $answerP1")
 
         // 1762 too low
