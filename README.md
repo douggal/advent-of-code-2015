@@ -7,9 +7,9 @@ Advent of Code Website:  [Advent of Code](https://adventofcode.com)
 
 My solution to each day's puzzles in Scala v3.3.1 unless otherwise noted.
 
-1. Day  1: Not Quite Lisp
+1. Day 1: Not Quite Lisp
 2. Day 2: I Was Told There Would Be No Math
-3. 
+3. Day 3: Perfectly Spherical Houses in a Vacuum
 
 ### Notes
 #### Day 1
@@ -32,3 +32,5 @@ Part 2: How many total feet of ribbon should they order?
 3783758 feet of ribbon is needed.
 Part 2 Elapsed time approx 10 milliseconds
 ```
+
+#### Day 3

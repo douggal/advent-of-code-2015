@@ -2,42 +2,42 @@ import java.io.File
 import java.time.{Duration, Instant, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
 
-/** Advent of Code 2015 Day X
+/** Advent of Code 2015 Day 3
  *
  * Defines a class, its companion object and runner method for
- * the AoC Day X puzzles.
+ * the AoC Day 3 puzzles.
  */
-class DayXX:
+class Day03:
 
     var title: String = "Default"
     var runType: Int = 1 // Default to test data
 
-    def run = DayXX.runPuzzle(title, runType)
+    def run = Day03.runPuzzle(title, runType)
 
-    override def toString: String = s"Class ${DayXX.puzzleTitle}"
+    override def toString: String = s"Class ${Day03.puzzleTitle}"
 
-end DayXX
+end Day03
 
-object DayXX {
+object Day03 {
 
     // created 9/23/2023
-    // https://adventofcode.com/2015/day/X
+    // https://adventofcode.com/2015/day/3
 
-    val puzzleTitle = "Day X: ... "
-    val day = "DayXX"
+    val puzzleTitle = "Day 3: Perfectly Spherical Houses in a Vacuum"
+    val day = "Day03"
     private val testData: String = s"${day}TestData.txt"
     private val realData: String = s"${day}Input.txt"
 
     // a one-arg constructor
-    def apply(title: String): DayXX = {
-        var p = new DayXX()
+    def apply(title: String): Day03 = {
+        var p = new Day03()
         p.title = title
         p
     }
 
     // a two-arg constructor
-    def apply(title: String, runType: Int): DayXX = {
-        var p = new DayXX()
+    def apply(title: String, runType: Int): Day03 = {
+        var p = new Day03()
         p.title = title
         p.runType = runType
         p
