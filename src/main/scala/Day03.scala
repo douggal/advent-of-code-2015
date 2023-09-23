@@ -122,8 +122,8 @@ object Day03 {
         val p2T0 = Instant.now()
 
         // Addresses of houses visited
-        var santaVisted = List(origin)  // Santa
-        var roboVisited = List(origin)  // Robo-Santa
+        var santaList = List(origin)  // Santa
+        var roboList = List(origin)  // Robo-Santa
 
         // Houses visited: represent each house visited as a 2-tuple (x, y)
         // add each node to a Map with key (x, y) and its value is the running count of deliveries
@@ -134,24 +134,30 @@ object Day03 {
         // Even integer index = Santa, Odd integer index = Robo-Santa
         val is = (0 until input(0).length).toList
         for (i <- is) do
+            // next move
             val c = input(0)(i)
+
             if i % 2 == 0 then
                 // Santa
-                santaVisted = newLocation(c, santaVisted.head) :: santaVisted
-                if (santaHouses.contains(santaVisted.head))
-                    santaHouses(santaVisted.head) += 1
+                santaList = newLocation(c, santaList.head) :: santaList
+                if (santaHouses.contains(santaList.head))
+                    santaHouses(santaList.head) += 1
                 else
-                    santaHouses += (santaVisted.head -> 1)
+                    santaHouses += (santaList.head -> 1)
             else
                 // Robo-Santa
-                roboVisited = newLocation(c, roboVisited.head) :: roboVisited
-                if (houses.contains(roboVisited.head))
-                    roboHouses(roboVisited.head) += 1
+                roboList = newLocation(c, roboList.head) :: roboList
+                if (roboHouses.contains(roboList.head))
+                    roboHouses(roboList.head) += 1
                 else
-                    roboHouses += (roboVisited.head -> 1)
+                    roboHouses += (roboList.head -> 1)
 
-        val answerP2 = santaHouses.size + roboHouses.size - 1  // -1 = both start at same location so there's one extra in the sum
+
+        val answerP2 = santaHouses.size + roboHouses.filter(x => !santaHouses.contains(x._1)).size
+        // 2783 - too high!! must have double counted houses go back and fix
+
         println(s"Answer $answerP2")
+
 
         val delta2 = Duration.between(p2T0, Instant.now())
         println(f"Part 2 elapsed time approx ${delta2.toMillis} milliseconds")

@@ -34,3 +34,10 @@ Part 2 Elapsed time approx 10 milliseconds
 ```
 
 #### Day 3
+```text
+Part 1: How many houses receive at least one present?  Answer 2572
+Part 1 elased time approx 20 milliseconds
+
+Part 2: with Santa and Robo-Santa delivering how many houses receive at least one present?  Answer 2631
+Part 2 elapsed time approx 9 milliseconds
+```
