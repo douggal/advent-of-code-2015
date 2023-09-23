@@ -81,11 +81,32 @@ object Day03 {
         println("End QC on input file\n")
 
         // Part One
-        println(s"Part 1: ")
+        println(s"Part 1: How many houses receive at least one present?")
         val p1T0 = Instant.now()
 
+        // represent each node as a 2-tuple (x, y)
+        // add each node to a Map with key (x, y) and value runnint count of deliveries
 
+        val origin = Tuple2[Int,Int](0, 0)
+        val deliveries = scala.collection.mutable.Map[(Int, Int),Int](origin -> 1)
 
+        var c = origin
+        for (m <- input(0)) do
+            m match
+                case '<' => c = (c._1 + -1, c._2)
+                case '^' => c = (c._1, c._2 + 1)
+                case '>' => c = (c._1+1, c._2)
+                case 'v' => c = (c._1, c._2 + -1)
+            if (deliveries.contains(c))
+                deliveries(c) += 1
+            else
+                deliveries += (c -> 1)
+
+        val moreThanOne = deliveries.values.toVector
+        val answerP1 = moreThanOne.count(_ > 1)
+        println(s"Answer $answerP1")
+
+        // 1762 too low
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 elased time approx ${delta1.toMillis} milliseconds\n")
