@@ -166,7 +166,7 @@ object Day03 {
 
         // errata...for visualation with Excel chart
         println("\nPart 1 Santa:")
-        for (k, v) <- addresses do println(s"$k,$v, ${houses((k,v))}")
+        //for (k, v) <- addresses do println(s"$k,$v, ${houses((k,v))}")
         println("\nPart 2: Santa")
         //for (k, v) <- santaList do println(s"$k,$v")
         println("\nPart 2: Robo-Santa")
