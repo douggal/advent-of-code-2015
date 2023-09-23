@@ -1,9 +1,11 @@
 import java.io.File
+import java.time.{Duration, Instant, ZonedDateTime}
+import scala.collection.mutable.ArrayBuffer
 
-/** Advent of Code 2015 Day XX: TEMPLATE for each day
+/** Advent of Code 2015 Day X
  *
  * Defines a class, its companion object and runner method for
- * the AoC Day XX puzzles.
+ * the AoC Day X puzzles.
  */
 class DayXX:
 
@@ -18,11 +20,11 @@ end DayXX
 
 object DayXX {
 
-    // created 9/8/2023
-    // https://adventofcode.com/2015/day/XX
+    // created 9/23/2023
+    // https://adventofcode.com/2015/day/X
 
-    val puzzleTitle = "Day 1: Not Quite Lisp"
-    val day = "dayXX"
+    val puzzleTitle = "Day X: ... "
+    val day = "DayXX"
     private val testData: String = s"${day}TestData.txt"
     private val realData: String = s"${day}Input.txt"
 
@@ -46,10 +48,9 @@ object DayXX {
         println(s"--- $title ---")
         println(s"--- $puzzleTitle ---")
         if (runType == 1)
-            println("--- USING TEST DATA ---")
+            println("--- USING TEST DATA ---\n")
         else
-            println("--- USING REAL INPUT DATA ---")
-        println(s"Start Timestamp ${java.time.ZonedDateTime.now()}")
+            println("--- USING REAL INPUT DATA ---\n")
 
         // Puzzle Input Data File
         val filename = if (runType == 1) testData else realData
@@ -68,34 +69,36 @@ object DayXX {
             println(line)
         }*/
 
+        println(s"Start Timestamp ${ZonedDateTime.now()}")
 
         println("\nData Quality Control:")
         println(s"Input file name: $filename")
         println(s"Each line is a: ${input.getClass}")
         println(s"Number lines: ${input.length}")
         println(s"Number items per line: ${input.head.count(_ => true)}")
-        println(s"Input first line: ${input.head}")
+        println(s"Input first line: ${input.head.take(25)}")
         if (input.size > 1) println(s"Input last line: ${input.tail.last}")
         println("End QC on input file\n")
 
         // Part One
-        println(s"Part 1 TBD")
-        val part1T0 = System.nanoTime()
+        println(s"Part 1: ")
+        val p1T0 = Instant.now()
 
 
-        val part1T1 = System.nanoTime()
-        println(s"Elapsed time ${part1T1 - part1T0} nanoseconds.")
+
+
+        val delta1 = Duration.between(p1T0, Instant.now())
+        println(s"Part 1 elased time approx ${delta1.toMillis} milliseconds\n")
 
 
         // Part Two
-        println(s"Part 2  [TBD]")
-        val part2T0 = System.nanoTime()
+        println(s"Part 2: ")
+        val p2T0 = Instant.now()
 
+        val delta2 = Duration.between(p2T0, Instant.now())
+        println(f"Part 2 elapsed time approx ${delta2.toMillis} milliseconds")
 
-        val part2T1 = System.nanoTime()
-        println(s"Elapsed time ${part2T1 - part2T0} nanoseconds.")
-
-
-        println(s"End at ${java.time.ZonedDateTime.now()}")
+        println(s"\nEnd at ${ZonedDateTime.now()}")
     }
+
 }
