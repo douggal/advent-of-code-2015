@@ -116,15 +116,30 @@ object Day05 {
 
 
         // Part Two
-        println(s"Part 2: TBD")
+        println(s"Part 2: How many strings are nice under these new rules?")
         val p2T0 = Instant.now()
 
-        // at least 1 char that appears twice in a row
-        val pattern4 = "(a{2}|b{2}|c{2}|d{2}|e{2}|f{2}|g{2}|h{2}|i{2}|j{2}|k{2}|l{2}|m{2}|n{2}|o{2}|p{2}|q{2}|r{2}|s{2}|t{2}|u{2}|v{2}|w{2}|x{2}|y{2}|z{2})".r // use findAllIn and count >= 1
+        // contains a pair of any two letters that appears at least twice
+        val pattern4 = "([a-z][a-z]).*\\1".r // use findAllIn and count >= 1
 
+        // It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
+        // backreference https://www.regular-expressions.info/backref.html
+        val pattern5 = "([a-z]{1})[a-z]{1}\\1".r
+
+        val betterNices = ArrayBuffer[String]()
+        for s <- input
+            if pattern4.findAllIn(s).size > 0 // more than 1 2-char pat that does not overlap
+            if pattern5.findAllIn(s).size > 0
+        do
+            betterNices += s
+            //println(s)
+
+        println(s"Number of better nice strings found is ${betterNices.length}")
 
         val delta2 = Duration.between(p2T0, Instant.now())
         println(f"Part 2 elapsed time approx ${delta2.toMillis} milliseconds")
+
+        // 140 too high
 
         println(s"\nEnd at ${ZonedDateTime.now()}")
 

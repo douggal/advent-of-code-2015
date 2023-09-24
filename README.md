@@ -67,9 +67,14 @@ Part 2 elapsed time approx 3880 milliseconds
 #### Day 5
 
 - Regex help [Regex 101](https://regex101.com/)
+- and regex backrefernces here [Regular-Expressions.info](https://www.regular-expressions.info/brackets.html)
 
 ```text
 Part 1: How many strings are nice?
 Number of nice strings found is 258
-Part 1 elased time approx 17 milliseconds
+Part 1 elased time approx 16 milliseconds
+
+Part 2: How many strings are nice under these new rules?
+Number of better nice strings found is 53
+Part 2 elapsed time approx 7 milliseconds
 ```
