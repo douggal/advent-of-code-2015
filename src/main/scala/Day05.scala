@@ -81,12 +81,35 @@ object Day05 {
         println("End QC on input file\n")
 
         // Commmon to both parts
+        val vowels = "aeiou"
 
         // Part One
         println(s"Part 1: How many strings are nice?")
         val p1T0 = Instant.now()
 
+        // Scala is fast.  Regex can be hard to debug and get right.
+        // Use simple regex pattern with capture groups
+        // and Scala methods to do counts on how many captures where found on each string.
 
+        // at least 3 vowels
+        val pattern1 = "(a|i|e|o|u)".r  // use findAllIn and count >= 3
+
+        // at least 1 char that appears twice in a row
+        val pattern2 = "(a{2,}|b{2,}|c{2,}|d{2,}|e{2,}|f{2,}|g{2,}|h{2,}|i{2,}|j{2,}|k{2,}|l{2,}|m{2,}|n{2,}|o{2,}|p{2,}|q{2,}|r{2,}|s{2,}|t{2,}|u{2,}|v{2,}|w{2,}|x{2,}|y{2,}|z{2,})".r  // use findAllIn and count >= 1
+
+        // does NOT contain any of the following even if part of other pattern
+        val pattern3 = "(ab|cd|pq|xy)".r  // use findAllIn if count > 0 then fail
+
+        val nices = ArrayBuffer[String]()
+        for s <- input
+            if pattern1.findAllIn(s).size >= 3  // at least 3 vowels
+            if pattern2.findAllIn(s).size >= 1  // at least 1 doubled char
+            if pattern3.findAllIn(s).size == 0  // does not contain disallowed pattern
+        do
+            nices += s
+            //println(s)
+
+        println(s"Number of nice strings found is ${nices.length}")
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 elased time approx ${delta1.toMillis} milliseconds\n")

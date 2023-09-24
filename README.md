@@ -63,5 +63,13 @@ Part 2: smallest number combined with prefix produces a MD5 has with *6* leading
 Answer smallest Int is 3938038
 Part 2 elapsed time approx 3880 milliseconds
 ```
+
 #### Day 5
 
+- Regex help [Regex 101](https://regex101.com/)
+
+```text
+Part 1: How many strings are nice?
+Number of nice strings found is 258
+Part 1 elased time approx 17 milliseconds
+```
