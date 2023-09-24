@@ -10,6 +10,9 @@ My solution to each day's puzzles in Scala v3.3.1 unless otherwise noted.
 1. Day 1: Not Quite Lisp
 2. Day 2: I Was Told There Would Be No Math
 3. Day 3: Perfectly Spherical Houses in a Vacuum
+4. Day 4: The Ideal Stocking Stuffer
+5. Day 5: Doesn't He Have Intern-Elves For This?
+6. Day 6: 
 
 ### Notes
 
@@ -60,3 +63,5 @@ Part 2: smallest number combined with prefix produces a MD5 has with *6* leading
 Answer smallest Int is 3938038
 Part 2 elapsed time approx 3880 milliseconds
 ```
+#### Day 5
+
