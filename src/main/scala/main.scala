@@ -1,3 +1,5 @@
+import java.time.ZonedDateTime
+
 @main
 def main(): Unit = {
 
@@ -11,7 +13,7 @@ def main(): Unit = {
     val runType = 1
 
     // Implement each day's puzzle
-    val d6 = Day06("AoC 2015 Day 6", runType)
+    val d6 = Day06(runType)
     val d5 = Day05("AoC 2015 Day 5", runType)
     val d4 = Day04("AoC 2015 Day 4", runType)
     val d3 = Day03("AoC 2015 Day 3", runType)
@@ -19,6 +21,8 @@ def main(): Unit = {
     val d1 = Day01("AoC 2015 Day 1", runType)
 
     // Run the selected day's puzzle
+    println(s"Begin: ${ZonedDateTime.now()}")
+
     day match {
         case 1 => d1.run
         case 2 => d2.run
@@ -29,4 +33,5 @@ def main(): Unit = {
         case _ => println("Error day does not match with a runner")
     }
 
+    println(s"\nEnd: ${ZonedDateTime.now()}")
 }

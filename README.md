@@ -12,7 +12,7 @@ My solution to each day's puzzles in Scala v3.3.1 unless otherwise noted.
 3. Day 3: Perfectly Spherical Houses in a Vacuum
 4. Day 4: The Ideal Stocking Stuffer
 5. Day 5: Doesn't He Have Intern-Elves For This?
-6. Day 6: 
+6. Day 6: Probably a Fire Hazard
 
 ### Notes
 
@@ -78,3 +78,11 @@ Part 2: How many strings are nice under these new rules?
 Number of better nice strings found is 53
 Part 2 elapsed time approx 7 milliseconds
 ```
+
+#### Day 6
+
+- Refactored my code template for better organization
+- Improved text file read with exception handling and Try/Success/Failure types. Thanks Al! Ref: Alvin Alexander [Learn Scala 3 The Fast Way](https://www.amazon.com/Learn-Scala-Fast-Way-Adventure-ebook/dp/B0BDWQ75YC/ref=sr_1_1?crid=2QL5ZC6H18JXH&keywords=learn+scala+3+the+fast+way&qid=1697330886&sprefix=learn+scala+3+the+fast+way%2Caps%2C80&sr=8-1)
+- Use one dimensional sequence to represent the 1000 x 1000 array with arithmetic to handle row, column coordinates.
+- Origin is top left with y's going downward and x's to the right.
+
