@@ -2,6 +2,7 @@ import scala.io.{BufferedSource, Source}
 import scala.util.{Try, Success, Failure}
 import java.time.{Duration, Instant, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
+import scala.util.matching.Regex
 
 /** Advent of Code 2015 Day 6
  *
@@ -67,7 +68,7 @@ object Day06 {
 
         // Read the puzzle input data file
         print("Attempting to read input data file using ")
-        if (runType == 1)
+        if (runType == 1) then
             println("TEST DATA ... ")
         else
             println("REAL INPUT DATA ...")
@@ -98,6 +99,27 @@ object Day06 {
         // Part One
         println(s"Part 1: how many lights are lit?")
         val p1T0 = Instant.now()
+
+        // model the square grid of 1000 x 1000 array as a 1d sequence of integers, 0 = off, 1 = on
+        // origin top-left, x's go to the right, y's go down
+        // that is, to traverse each row cell by cell, the outer loop is over the y's (the rows)
+        // index 0 in the 1d grid is empty
+        val offset = 100
+        val grid = ArrayBuffer[Int](offset*offset)
+
+        for
+            y <- 0 to offset
+            x <- 0 to offset
+        do
+            grid.append(0)
+            // println(s"(${x} ${y}) => ${y * offset + x + 1}, ")
+
+        val pat = raw"(turn on|toggle|turn off) (\d{1,},\d{1,}) through (\d{1,},\d{1,})".r
+        for line <- input do {
+            val pat(cmd, corner1, corner2) = line
+
+        }
+
 
 
 

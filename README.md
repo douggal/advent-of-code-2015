@@ -81,7 +81,7 @@ Part 2 elapsed time approx 7 milliseconds
 
 #### Day 6
 
-- Refactored my code template for better organization
+- Refactored my code template for a better and cleaner organization
 - Improved text file read with exception handling and Try/Success/Failure types. Thanks Al! Ref: Alvin Alexander [Learn Scala 3 The Fast Way](https://www.amazon.com/Learn-Scala-Fast-Way-Adventure-ebook/dp/B0BDWQ75YC/ref=sr_1_1?crid=2QL5ZC6H18JXH&keywords=learn+scala+3+the+fast+way&qid=1697330886&sprefix=learn+scala+3+the+fast+way%2Caps%2C80&sr=8-1)
 - Use one dimensional sequence to represent the 1000 x 1000 array with arithmetic to handle row, column coordinates.
 - Origin is top left with y's going downward and x's to the right.
