@@ -94,38 +94,80 @@ object Day06 {
         println("End QC on input file\n")
 
         // Commmon to both parts
-        def turnOn(corner1: String, corner2: String) = {
-            println("Turn on")
-        }
+        // The grid.  Create and initialize the grid.
+        // Model the square grid of 1000 x 1000 array of LEDs.
+        // Represented as a 1d sequence of integers, 0 = off, 1 = on.
+        // Origin is bottom left, with x's going to right, confusingly representing columns in the grid, and
+        // the y's increasing in upward direction, reprsenting rows in the grid.
+        // Note to self, remember, to traverse each row cell by cell, right to left,
+        // the outer loop is over the y's (the rows)
 
-        def toggle(corner1: String, corner2: String) = {
-            println("Toggle")
-        }
+        // given a coord (x, y) then cell in grid is found by
+        //        y * offset + x + 1
+        // given a index of cell, then its cooresponding coord is
+        //        ( , )
 
-        def turnOff(corner1: String, corner2: String) = {
-            println("Turn off")
-        }
-        
+        val offset = 10
+        val grid = ArrayBuffer[Int]()
+
+        // Index 0 in the 1d grid is not used.  Populated with count of led's per side, or maybe it could be used to represent an attribute of the power source connection.
+        grid.append(offset)
+
+        for
+            row <- 0 until offset
+            col <- 0 until offset
+        do
+            grid.append(0)
+            // println(s"Added item for coord: (${row}, ${col}), index = ${grid.length-1}")
+
         // Part One
         println(s"Part 1: how many lights are lit?")
         val p1T0 = Instant.now()
 
-        // model the square grid of 1000 x 1000 array as a 1d sequence of integers, 0 = off, 1 = on
-        // origin top-left, x's go to the right, y's go down
-        // that is, to traverse each row cell by cell, the outer loop is over the y's (the rows)
-        // index 0 in the 1d grid is empty
-        val offset = 100
-        val grid = ArrayBuffer[Int](offset*offset)
+        def parseCoord(corner: String): (Int, Int) = {
+            val coords = corner.split(',').map(_.toInt)
+            (coords(0), coords(1))
+        }
 
-        for
-            y <- 0 to offset
-            x <- 0 to offset
-        do
-            grid.append(0)
-            // println(s"(${x} ${y}) => ${y * offset + x + 1}, ")
+        def turnOn(corner1: String, corner2: String): Unit = {
+            println("Turn on")
+            val c1 = parseCoord(corner1)
+            val c2 = parseCoord(corner2)
+            // assume: lower left to upper right orientation
+            for
+                x <- c1._1 to c2._1
+                y <- c1._2 to c2._2 // use to not until - inclusive
+            do
+                grid(y * offset + x + 1) = 1
+        }
 
-        val pat = raw"(turn on|toggle|turn off) (\d{1,},\d{1,}) through (\d{1,},\d{1,})".r
+        def toggle(corner1: String, corner2: String) = {
+            println("Toggle")
+            val c1 = parseCoord(corner1)
+            val c2 = parseCoord(corner2)
+            // assume: lower left to upper right orientation
+            for
+                x <- c1._1 to c2._1
+                y <- c1._2 to c2._2 // use to not until - inclusive
+            do
+                grid(y*offset + x + 1) ^= 1 // exclusive OR - flip the bit
+        }
 
+        def turnOff(corner1: String, corner2: String) = {
+            println("Turn off")
+            val c1 = parseCoord(corner1)
+            val c2 = parseCoord(corner2)
+            // assume: lower left to upper right orientation
+            for
+                x <- c1._1 to c2._1
+                y <- c1._2 to c2._2 // use to not until - inclusive
+            do
+                grid(y*offset + x + 1) = 0
+        }
+
+        val pat = raw"(turn on|toggle|turn off) (\d+,\d+) through (\d+,\d+)".r
+
+        var linesProcessed = 0
         for line <- input do {
             val pat(cmd, corner1, corner2) = line
             cmd match
@@ -136,11 +178,21 @@ object Day06 {
                     println("ERROR!  Unidentfied instruction")
                     System.exit(1)
                 }
+                linesProcessed += 1
         }
+        println(s"Processed ${linesProcessed}")
+        println(s"Count of lights turned on is: ${grid.sum}")
+
+        for
+            row <- 0 until offset
+            col <- 0 until offset
+        do
+            print(s"${grid(row*offset+col+1)}, ")
+            if col == offset-1 then
+                println
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
-
 
         // Part Two
         println(s"Part 2: ???")

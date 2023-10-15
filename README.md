@@ -81,8 +81,11 @@ Part 2 elapsed time approx 7 milliseconds
 
 #### Day 6
 
+- Took me longer to solve than I had expected.  Confused row, column vs x, y in the coords and made a lot of dumb 
+mistakes setting up a representation of the grid.
 - Refactored my code template for a better and cleaner organization
 - Improved text file read with exception handling and Try/Success/Failure types. Thanks Al! Ref: Alvin Alexander [Learn Scala 3 The Fast Way](https://www.amazon.com/Learn-Scala-Fast-Way-Adventure-ebook/dp/B0BDWQ75YC/ref=sr_1_1?crid=2QL5ZC6H18JXH&keywords=learn+scala+3+the+fast+way&qid=1697330886&sprefix=learn+scala+3+the+fast+way%2Caps%2C80&sr=8-1)
 - Use one dimensional sequence to represent the 1000 x 1000 array with arithmetic to handle row, column coordinates.
-- Origin is top left with y's going downward and x's to the right.
+- Cartesian coords:  origin is bottom left with the x's going to the right, and the columns (y's) going upward.
+- A coordinate is (x, y) with x being index of column and y the index of row in the gird of LEDs
 
