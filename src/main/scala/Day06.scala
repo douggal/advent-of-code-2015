@@ -94,9 +94,21 @@ object Day06 {
         println("End QC on input file\n")
 
         // Commmon to both parts
-        // The grid.  Create and initialize the grid.
-        // Model the square grid of 1000 x 1000 array of LEDs.
-        // Represented as a 1d sequence of integers, 0 = off, 1 = on.
+
+        // Regx to parse each input line
+        val pat = raw"(turn on|toggle|turn off) (\d+,\d+) through (\d+,\d+)".r
+
+        // Parse out (x,y) coords from string and return as Tuple2
+        def parseCoord(corner: String): (Int, Int) = {
+            val coords = corner.split(',').map(_.toInt)
+            (coords(0), coords(1))
+        }
+
+        // The LED grid.
+        // Model the square grid of 1000 x 1000 1 dimensional sequence of LEDs in a mutable ArrayBuffer.
+        // Makes sense - how could a FP technique would do any better?
+        // Part 1:  0 = off, 1 = on.
+        // Part 2:  value indicates brightness.
         // Origin is bottom left, with x's going to right, confusingly representing columns in the grid, and
         // the y's increasing in upward direction, reprsenting rows in the grid.
 
@@ -112,20 +124,18 @@ object Day06 {
         grid.append(offset)
 
         for
-            row <- 0 until offset
-            col <- 0 until offset
+            y <- 0 until offset
+            x <- 0 until offset
         do
             grid.append(0)
             // println(s"Added item for coord: (${row}, ${col}), index = ${grid.length-1}")
 
-        // Part One
+        // ----------
+        //  Part One
+        // ----------
+
         println(s"Part 1: how many lights are lit?")
         val p1T0 = Instant.now()
-
-        def parseCoord(corner: String): (Int, Int) = {
-            val coords = corner.split(',').map(_.toInt)
-            (coords(0), coords(1))
-        }
 
         def turnOn(corner1: String, corner2: String): Unit = {
             val c1 = parseCoord(corner1)
@@ -160,8 +170,6 @@ object Day06 {
                 grid(y*offset + x + 1) = 0
         }
 
-        val pat = raw"(turn on|toggle|turn off) (\d+,\d+) through (\d+,\d+)".r
-
         var linesProcessed = 0
         for line <- input do {
             val pat(cmd, corner1, corner2) = line
@@ -191,11 +199,69 @@ object Day06 {
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
 
-        // Part Two
-        println(s"Part 2: ???")
+        // ----------
+        //  Part Two
+        // ----------
+
+        println(s"Part 2: What is the total brightness of all lights combined after following Santa's instructions?")
         val p2T0 = Instant.now()
 
+        def turnOn2(corner1: String, corner2: String): Unit = {
+            val c1 = parseCoord(corner1)
+            val c2 = parseCoord(corner2)
+            // assume: lower left to upper right orientation
+            for
+                x <- c1._1 to c2._1
+                y <- c1._2 to c2._2 // use to not until - inclusive
+            do
+                grid(y * offset + x + 1) += 1
+        }
 
+        def toggle2(corner1: String, corner2: String) = {
+            val c1 = parseCoord(corner1)
+            val c2 = parseCoord(corner2)
+            // assume: lower left to upper right orientation
+            for
+                x <- c1._1 to c2._1
+                y <- c1._2 to c2._2 // use to not until - inclusive
+            do
+                grid(y * offset + x + 1) += 2
+        }
+
+        def turnOff2(corner1: String, corner2: String) = {
+            val c1 = parseCoord(corner1)
+            val c2 = parseCoord(corner2)
+            // assume: lower left to upper right orientation
+            for
+                x <- c1._1 to c2._1
+                y <- c1._2 to c2._2 // use to not until - inclusive
+            do
+                if grid(y * offset + x + 1) >0 then
+                    grid(y * offset + x + 1) -= 1
+        }
+
+        // reset grid to all 0's
+        for
+            y <- 0 until offset
+            x <- 0 until offset
+        do
+            grid(y*offset + x + 1) = 0
+
+        var linesProcessed2 = 0
+        for line <- input do {
+            val pat(cmd, corner1, corner2) = line
+            cmd match
+                case "turn on" => turnOn2(corner1, corner2)
+                case "toggle" => toggle2(corner1, corner2)
+                case "turn off" => turnOff2(corner1, corner2)
+                case _ => {
+                    println("ERROR! Part 2 Unidentfied instruction")
+                    System.exit(1)
+                }
+            linesProcessed2 += 1
+        }
+        println(s"Processed ${linesProcessed2} lines of instructions.")
+        println(s"Sum of values of lights is: ${grid.tail.sum}")
 
         val delta2 = Duration.between(p2T0, Instant.now())
         println(f"Part 2 run time approx ${delta2.toMillis} milliseconds")

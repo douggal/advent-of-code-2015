@@ -89,3 +89,12 @@ mistakes setting up a representation of the grid.
 - Cartesian coords:  origin is bottom left with the x's going to the right, and the columns (y's) going upward.
 - A coordinate is (x, y) with x being index of column and y the index of row in the gird of LEDs
 
+```text
+Part 1: how many lights are lit?
+Count of lights turned on is: 377891
+Part 1 run time approx 264 milliseconds
+
+Part 2: What is the total brightness of all lights combined after following Santa's instructions?
+Sum of values of lights is: 14110788
+Part 2 run time approx 239 milliseconds
+```

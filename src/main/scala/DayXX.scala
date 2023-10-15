@@ -95,7 +95,9 @@ object DayXX {
         // Commmon to both parts
 
 
-        // Part One
+        // ----------
+        //  Part One
+        // ----------
         println(s"Part 1: ???")
         val p1T0 = Instant.now()
 
@@ -105,7 +107,9 @@ object DayXX {
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
 
 
-        // Part Two
+        // ----------
+        //  Part Two
+        // ----------
         println(s"Part 2: ???")
         val p2T0 = Instant.now()
 
