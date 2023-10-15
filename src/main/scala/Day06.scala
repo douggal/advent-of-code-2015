@@ -94,8 +94,18 @@ object Day06 {
         println("End QC on input file\n")
 
         // Commmon to both parts
+        def turnOn(corner1: String, corner2: String) = {
+            println("Turn on")
+        }
 
+        def toggle(corner1: String, corner2: String) = {
+            println("Toggle")
+        }
 
+        def turnOff(corner1: String, corner2: String) = {
+            println("Turn off")
+        }
+        
         // Part One
         println(s"Part 1: how many lights are lit?")
         val p1T0 = Instant.now()
@@ -115,13 +125,18 @@ object Day06 {
             // println(s"(${x} ${y}) => ${y * offset + x + 1}, ")
 
         val pat = raw"(turn on|toggle|turn off) (\d{1,},\d{1,}) through (\d{1,},\d{1,})".r
+
         for line <- input do {
             val pat(cmd, corner1, corner2) = line
-
+            cmd match
+                case "turn on" => turnOn(corner1, corner2)
+                case "toggle" => toggle(corner1, corner2)
+                case "turn off" => turnOff(corner1, corner2)
+                case _ => {
+                    println("ERROR!  Unidentfied instruction")
+                    System.exit(1)
+                }
         }
-
-
-
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
