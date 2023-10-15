@@ -12,7 +12,7 @@ My solution to each day's puzzles in Scala v3.3.1 unless otherwise noted.
 3. Day 3: Perfectly Spherical Houses in a Vacuum
 4. Day 4: The Ideal Stocking Stuffer
 5. Day 5: Doesn't He Have Intern-Elves For This?
-6. Day 6: 
+6. Day 6: Probably a Fire Hazard
 
 ### Notes
 
@@ -77,4 +77,24 @@ Part 1 elased time approx 16 milliseconds
 Part 2: How many strings are nice under these new rules?
 Number of better nice strings found is 53
 Part 2 elapsed time approx 7 milliseconds
+```
+
+#### Day 6
+
+- Took me longer to solve than I had expected.  Confused row, column vs x, y in the coords and made a lot of dumb 
+mistakes setting up a representation of the grid.
+- Refactored my code template for a better and cleaner organization
+- Improved text file read with exception handling and Try/Success/Failure types. Thanks Al! Ref: Alvin Alexander [Learn Scala 3 The Fast Way](https://www.amazon.com/Learn-Scala-Fast-Way-Adventure-ebook/dp/B0BDWQ75YC/ref=sr_1_1?crid=2QL5ZC6H18JXH&keywords=learn+scala+3+the+fast+way&qid=1697330886&sprefix=learn+scala+3+the+fast+way%2Caps%2C80&sr=8-1)
+- Use one dimensional sequence to represent the 1000 x 1000 array with arithmetic to handle row, column coordinates.
+- Cartesian coords:  origin is bottom left with the x's going to the right, and the columns (y's) going upward.
+- A coordinate is (x, y) with x being index of column and y the index of row in the gird of LEDs
+
+```text
+Part 1: how many lights are lit?
+Count of lights turned on is: 377891
+Part 1 run time approx 264 milliseconds
+
+Part 2: What is the total brightness of all lights combined after following Santa's instructions?
+Sum of values of lights is: 14110788
+Part 2 run time approx 239 milliseconds
 ```
