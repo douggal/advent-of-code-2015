@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
+    <option name="deprecationWarnings" value="true" />
+    <parameters>
+      <parameter value="-explain" />
+      <parameter value="-Vprofile-details" />
+      <parameter value="5" />
+    </parameters>
     <profile name="sbt 1" modules="advent-of-code-2015" />
   </component>
 </project>
