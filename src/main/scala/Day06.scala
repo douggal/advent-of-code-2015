@@ -99,15 +99,13 @@ object Day06 {
         // Represented as a 1d sequence of integers, 0 = off, 1 = on.
         // Origin is bottom left, with x's going to right, confusingly representing columns in the grid, and
         // the y's increasing in upward direction, reprsenting rows in the grid.
-        // Note to self, remember, to traverse each row cell by cell, right to left,
-        // the outer loop is over the y's (the rows)
 
-        // given a coord (x, y) then cell in grid is found by
+        // given a coord (x, y) then its cell in grid is found by
         //        y * offset + x + 1
         // given a index of cell, then its cooresponding coord is
         //        ( , )
 
-        val offset = 10
+        val offset = 1000
         val grid = ArrayBuffer[Int]()
 
         // Index 0 in the 1d grid is not used.  Populated with count of led's per side, or maybe it could be used to represent an attribute of the power source connection.
@@ -130,7 +128,6 @@ object Day06 {
         }
 
         def turnOn(corner1: String, corner2: String): Unit = {
-            println("Turn on")
             val c1 = parseCoord(corner1)
             val c2 = parseCoord(corner2)
             // assume: lower left to upper right orientation
@@ -142,7 +139,6 @@ object Day06 {
         }
 
         def toggle(corner1: String, corner2: String) = {
-            println("Toggle")
             val c1 = parseCoord(corner1)
             val c2 = parseCoord(corner2)
             // assume: lower left to upper right orientation
@@ -154,7 +150,6 @@ object Day06 {
         }
 
         def turnOff(corner1: String, corner2: String) = {
-            println("Turn off")
             val c1 = parseCoord(corner1)
             val c2 = parseCoord(corner2)
             // assume: lower left to upper right orientation
@@ -180,16 +175,18 @@ object Day06 {
                 }
                 linesProcessed += 1
         }
-        println(s"Processed ${linesProcessed}")
-        println(s"Count of lights turned on is: ${grid.sum}")
+        println(s"Processed ${linesProcessed} lines of instructions.")
+        println(s"Count of lights turned on is: ${grid.tail.sum}")
+        // 378891 too high - do not incl head
 
-        for
-            row <- 0 until offset
-            col <- 0 until offset
-        do
-            print(s"${grid(row*offset+col+1)}, ")
-            if col == offset-1 then
-                println
+        // print grid
+//        for
+//            y <- 0 until offset
+//            x <- 0 until offset
+//        do
+//            print(s"${grid(y*offset+x+1)}, ")
+//            if x == offset-1 then
+//                println
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")

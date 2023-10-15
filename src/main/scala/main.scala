@@ -10,7 +10,7 @@ def main(): Unit = {
 
     // Which day's puzzle to run?
     val day = 6
-    val runType = 1
+    val runType = 2
 
     // Implement each day's puzzle
     val d6 = Day06(runType)
