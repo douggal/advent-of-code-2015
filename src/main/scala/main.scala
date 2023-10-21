@@ -31,7 +31,7 @@ def main(): Unit = {
         case 4 => d4.run
         case 5 => d5.run
         case 6 => d6.run
-        case 7 => d7.run
+        case 7 => d7.runPuzzle()
         case _ => println("Error day does not match with a runner")
     }
 

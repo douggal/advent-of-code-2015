@@ -12,8 +12,7 @@ class Day07:
 
     var title: String = "Advent of Code 2015"
     var runType: Int = 1 // Default to test data
-
-    def run = Day07.runPuzzle(runType)
+    def runPuzzle():Unit = Day07.runPuzzle(runType)
 
     override def toString: String = s"Class ${Day07.puzzleTitle}"
 
@@ -66,7 +65,7 @@ object Day07 {
         println(s"  Each line is a: ${input.head.getClass}")
         println(s"  Number lines: ${input.length}")
         println(s"  Number items per line: ${input.head.count(_ => true)}")
-        println(s"  First line: ${input.head.take(72)}")
+        println(s"  First line (up to 72 chars): ${input.head.take(72)}")
         if (input.size > 1)
             println(s"  Last line: ${input.last}")
         println("End QC on input file\n")
