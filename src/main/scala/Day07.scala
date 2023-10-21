@@ -3,43 +3,43 @@ import scala.util.{Try, Success, Failure}
 import java.time.{Duration, Instant, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
 
-/** Advent of Code 2015 Day XX
+/** Advent of Code 2015 Day 07
  *
  * Defines a class, its companion object and runner method for
- * the AoC Day XX puzzles.
+ * the AoC Day 07 puzzles.
  */
-class DayXX:
+class Day07:
 
     var title: String = "Advent of Code 2015"
     var runType: Int = 1 // Default to test data
 
-    def run = DayXX.runPuzzle(runType)
+    def run = Day07.runPuzzle(runType)
 
-    override def toString: String = s"Class ${DayXX.puzzleTitle}"
+    override def toString: String = s"Class ${Day07.puzzleTitle}"
 
-end DayXX
+end Day07
 
-object DayXX {
+object Day07 {
 
-    // created 9/24/2023
-    // https://adventofcode.com/2015/day/X
-    val day = "XX"
-    val puzzleTitle = "Day XX: ... "
+    // created 10/21/2023
+    // https://adventofcode.com/2015/day/7
+    val day = "07"
+    val puzzleTitle = "Day 7: Some Assembly Required"
 
     // input data files
     private val testData: String = s"${day}-test.txt"
     private val realData: String = s"${day}-input.txt"
 
     // a one-arg constructor
-    def apply(runType: Int): DayXX = {
-        var p = new DayXX()
+    def apply(runType: Int): Day07 = {
+        var p = new Day07()
         p.runType = runType
         p
     }
 
     // a two-arg constructor
-    def apply(title: String, runType: Int): DayXX = {
-        var p = new DayXX()
+    def apply(title: String, runType: Int): Day07 = {
+        var p = new Day07()
         p.title = title
         p.runType = runType
         p
@@ -77,7 +77,7 @@ object DayXX {
         // ----------
         //  Part One
         // ----------
-        println(s"Part 1: ???")
+        println(s"Part 1: In little Bobby's kit's instructions booklet (provided as your puzzle input), what signal is ultimately provided to wire a?")
         val p1T0 = Instant.now()
 
 

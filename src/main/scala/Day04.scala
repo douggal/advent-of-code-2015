@@ -22,9 +22,9 @@ object Day04 {
     // https://adventofcode.com/2015/day/3
 
     val puzzleTitle = "Day 4: The Ideal Stocking Stuffer"
-    val day = "Day04"
-    private val testData: String = s"${day}TestData.txt"
-    private val realData: String = s"${day}Input.txt"
+    val day = "04"
+    private val testData: String = s"${day}-test.txt"
+    private val realData: String = s"${day}-input.txt"
 
     // a one-arg constructor
     def apply(title: String): Day04 = {

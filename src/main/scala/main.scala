@@ -9,10 +9,11 @@ def main(): Unit = {
     //         = 2 for real data
 
     // Which day's puzzle to run?
-    val day = 6
-    val runType = 2
+    val day = 7
+    val runType = 1
 
     // Implement each day's puzzle
+    val d7 = Day07(runType)
     val d6 = Day06(runType)
     val d5 = Day05("AoC 2015 Day 5", runType)
     val d4 = Day04("AoC 2015 Day 4", runType)
@@ -30,6 +31,7 @@ def main(): Unit = {
         case 4 => d4.run
         case 5 => d5.run
         case 6 => d6.run
+        case 7 => d7.run
         case _ => println("Error day does not match with a runner")
     }
 
