@@ -13,6 +13,7 @@ My solution to each day's puzzles in Scala v3.3.1 unless otherwise noted.
 4. Day 4: The Ideal Stocking Stuffer
 5. Day 5: Doesn't He Have Intern-Elves For This?
 6. Day 6: Probably a Fire Hazard
+7. Day 7: Some Assembly Required
 
 ### Notes
 
@@ -98,3 +99,12 @@ Part 2: What is the total brightness of all lights combined after following Sant
 Sum of values of lights is: 14110788
 Part 2 run time approx 239 milliseconds
 ```
+
+#### Day 7
+
+- Refactor again, this time for simplicity
+- Followed example here: [Jan\-Pieter van den Heuvel \- Saving Christmas Using Scala](https://www.youtube.com/watch?v=tHU36gQ5iAI)
+- Moved input files to /src/main/resources
+- Update Day01 - Day06 classes to load file from resources folder
+- Day 07 and after, using newer library features and simple scala.io.Source.fromResource to read input files
+

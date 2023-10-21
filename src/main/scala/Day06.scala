@@ -28,8 +28,8 @@ object Day06 {
     val puzzleTitle = "Day 6: Probably a Fire Hazard"
 
     // input data files
-    private val testData: String = s"Day${day}TestData.txt"
-    private val realData: String = s"Day${day}Input.txt"
+    private val testData: String = s"${day}-test.txt"
+    private val realData: String = s"${day}-input.txt"
 
     // a one-arg constructor
     def apply(runType: Int): Day06 = {
@@ -73,7 +73,7 @@ object Day06 {
         else
             println("REAL INPUT DATA ...")
         val filename = if (runType == 1) testData else realData
-        val path = java.nio.file.Paths.get("./input").toAbsolutePath().toString
+        val path = java.nio.file.Paths.get("src/main/resources").toAbsolutePath().toString
         val text = readTextFile(s"$path/$filename")
         text match
             case Success(contents) => println(s"input file successfully read in.")

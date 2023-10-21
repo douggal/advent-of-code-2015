@@ -24,9 +24,9 @@ object Day05 {
     // https://adventofcode.com/2015/day/5
 
     val puzzleTitle = "Day 5: Doesn't He Have Intern-Elves For This?"
-    val day = "Day05"
-    private val testData: String = s"${day}TestData.txt"
-    private val realData: String = s"${day}Input.txt"
+    val day = "05"
+    private val testData: String = s"${day}-test.txt"
+    private val realData: String = s"${day}-input.txt"
 
     // a one-arg constructor
     def apply(title: String): Day05 = {
@@ -56,7 +56,7 @@ object Day05 {
         val filename = if (runType == 1) testData else realData
 
         val readInputData = () => {
-            val f = java.nio.file.Paths.get("./input").toAbsolutePath().toString
+            val f = java.nio.file.Paths.get("src/main/resources").toAbsolutePath().toString
             val source = io.Source.fromFile(s"$f/$filename", "UTF-8")
             for {
                 line <- source.getLines().toVector
