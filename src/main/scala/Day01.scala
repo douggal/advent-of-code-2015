@@ -12,7 +12,7 @@ class Day01:
     var title: String = "Default"
     var runType: Int = 1 // Default to test data
 
-    def run = Day01.runPuzzle(title, runType)
+    def run():Unit = Day01.runPuzzle(title, runType)
 
     override def toString: String = s"Class ${Day01.puzzleTitle}"
 

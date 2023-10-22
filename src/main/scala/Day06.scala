@@ -14,7 +14,7 @@ class Day06:
     var title: String = "Advent of Code 2015"
     var runType: Int = 1 // Default to test data
 
-    def run = Day06.runPuzzle(runType)
+    def run():Unit = Day06.runPuzzle(runType)
 
     override def toString: String = s"Class ${Day06.puzzleTitle}"
 
