@@ -72,6 +72,12 @@ object Day07 {
 
         // Common to both parts
 
+        // Note:  Scala does not have an unsigned int.  Discussion and display method here:
+        // https://stackoverflow.com/questions/21212993/unsigned-variables-in-scala?noredirect=1&lq=1
+        // one reply suggests up convert to a Long for display...
+        // Convert it to the equivalent Scala BigInt
+        def asUnsigned(unsignedLong: Long) =
+            (BigInt(unsignedLong >>> 1) << 1) + (unsignedLong & 1)
 
         // ----------
         //  Part One
@@ -81,13 +87,39 @@ object Day07 {
 
         val wires = scala.collection.mutable.Map[String, Int]()
 
-        val assignValueRE = "([0-9]+) (->) ([a-z]+)".r
+        // 123 -> x
+        val assignValueRE = raw"([0-9]+) (->) ([a-z]+)".r
 
+        // x AND y -> d
+        val operationRE = raw"([a-z]+) (AND|OR|) ([a-z]+) (->) ([a-z]+)".r
+
+        // x LSHIFT 2 -> d
+        val shiftRE = raw"([a-z]+) (LSHIFT|RSHIFT) ([1-9]+) (->) ([a-z]+)".r
+
+        // NOT x -> h
+        val notRE = raw"(NOT) ([a-z]+) (->) ([a-z]+)".r
+
+        // p = the thin arrow "->"
         for (line <- input)
             val results = line match
                 case assignValueRE(v, p, w) => wires(w) = v.toInt
+                case operationRE(l, op, r, p, w) => {
+                    op match
+                        case "AND" => wires(w) = wires(l) & wires(r)
+                        case "OR" => wires(w) = wires(l) | wires(r)
+                        case _ => ???
+                }
+                case shiftRE(l, op, r, p, w) => {
+                    op match
+                        case "LSHIFT" => wires(w) = wires(l) << r.toInt
+                        case "RSHIFT" => wires(w) = wires(l) >>> r.toInt  // unsigned shift right
+                        case _ => ???
+                }
+                case notRE(op, r, p, w) => wires(w) = -wires(r) - 1  // https://en.wikipedia.org/wiki/Bitwise_operation#NOT
                 case _ => None
-        wires.foreach(println)
+
+        for (w <- wires) do
+            println(s"${w._1}: ${asUnsigned(w._2)}")
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
@@ -107,4 +139,5 @@ object Day07 {
         // errata...for visualation with Excel chart
 
     }
+
 }

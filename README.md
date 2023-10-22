@@ -107,4 +107,5 @@ Part 2 run time approx 239 milliseconds
 - Moved input files to /src/main/resources
 - Update Day01 - Day06 classes to load file from resources folder
 - Day 07 and after, using newer library features and simple scala.io.Source.fromResource to read input files
-
+- [Scala does not have an unsigned int type](https://stackoverflow.com/questions/21212993/unsigned-variables-in-scala?noredirect=1&lq=1)
+- 
