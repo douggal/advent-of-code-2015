@@ -79,7 +79,15 @@ object Day07 {
         println(s"Part 1: In little Bobby's kit's instructions booklet (provided as your puzzle input), what signal is ultimately provided to wire a?")
         val p1T0 = Instant.now()
 
+        val wires = scala.collection.mutable.Map[String, Int]()
 
+        val assignValueRE = "([0-9]+) (->) ([a-z]+)".r
+
+        for (line <- input)
+            val results = line match
+                case assignValueRE(v, p, w) => wires(w) = v.toInt
+                case _ => None
+        wires.foreach(println)
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")

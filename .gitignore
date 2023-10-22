@@ -74,3 +74,9 @@ project/metals.sbt
 
 # general
 *.class
+
+# Scala Metals for VS Code
+.metals/
+.bloop/
+.ammonite/
+metals.sbt

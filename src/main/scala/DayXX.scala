@@ -82,7 +82,7 @@ object DayXX {
 
 
 
-        val delta1 = Duration.between(p1T0, Instant.now())
+        val delta1: Duration = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
 
 
