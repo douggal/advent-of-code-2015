@@ -102,10 +102,12 @@ Part 2 run time approx 239 milliseconds
 
 #### Day 7
 
+- Did not realize at first bit-width of Scala Int is 32, and was surprised bitwise ops are not supported on Short when I tried to use Short
+- The NOT operation fooled me.  Didn't realize I had to mask off the high 16 bits.
 - Refactor again, this time for simplicity
 - Followed example here: [Jan\-Pieter van den Heuvel \- Saving Christmas Using Scala](https://www.youtube.com/watch?v=tHU36gQ5iAI)
 - Moved input files to /src/main/resources
 - Update Day01 - Day06 classes to load file from resources folder
 - Day 07 and after, using newer library features and simple scala.io.Source.fromResource to read input files
-- [Scala does not have an unsigned int type](https://stackoverflow.com/questions/21212993/unsigned-variables-in-scala?noredirect=1&lq=1)
+- [Scala does not have an unsigned int type](https://stackoverflow.com/questions/21212993/unsigned-variables-in-scala?noredirect=1&lq=1) !
 - 

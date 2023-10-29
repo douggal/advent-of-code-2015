@@ -72,12 +72,14 @@ object Day07 {
 
         // Common to both parts
 
-        // Note:  Scala does not have an unsigned int.  Discussion and display method here:
+        // Note 1: bitwise operators are defined on Int and not available for Short
+        //
+        // Note 2: Scala does not have an unsigned int.  Discussion and display method here:
         // https://stackoverflow.com/questions/21212993/unsigned-variables-in-scala?noredirect=1&lq=1
         // one reply suggests up convert to a Long for display...
         // Convert it to the equivalent Scala BigInt
-        def asUnsigned(unsignedLong: Long) =
-            (BigInt(unsignedLong >>> 1) << 1) + (unsignedLong & 1)
+        def asUnsigned(unsignedInt: Int) =
+            (BigInt(unsignedInt >>> 1) << 1) + (unsignedInt & 1)
 
         // ----------
         //  Part One
@@ -111,11 +113,52 @@ object Day07 {
                 }
                 case shiftRE(l, op, r, p, w) => {
                     op match
-                        case "LSHIFT" => wires(w) = wires(l) << r.toInt
-                        case "RSHIFT" => wires(w) = wires(l) >>> r.toInt  // unsigned shift right
+                        case "LSHIFT" => {
+                            println("LSHIFT")
+                            println(s"wires(l) = ${wires(l).toBinaryString}")
+                            wires(w) = wires(l) << r.toInt
+                            println(s"wires(x) = ${wires(w).toBinaryString}")
+                            // move high 16 bits to right side of the lower 16 bits
+                            var hi = wires(w)
+                            println(s"hi = ${hi.toBinaryString}")
+                            var lo = wires(w)
+                            println(s"lo = ${lo.toBinaryString}")
+                            hi = hi & 0xffff0000
+                            lo = lo & 0x0000ffff
+                            println(s"hi = ${hi.toBinaryString}")
+                            println(s"lo = ${lo.toBinaryString}")
+                            hi = hi << 16
+                            println(s"hi = ${hi.toBinaryString}")
+                            wires(w) = lo | hi
+                            println(s"wires(x) = ${wires(w).toBinaryString}")
+                        }
+                        case "RSHIFT" => {
+                            println("RSHIFT")
+                            println(s"wires(l) = ${wires(l).toBinaryString}")
+                            wires(w) = wires(l) >>> r.toInt // unsigned shift right
+                            println(s"wires(w) = ${wires(w).toBinaryString}")
+                            // move high 16 bits to right side of the lower 16 bits
+                            var hi = wires(w)
+                            println(s"hi = ${hi.toBinaryString}")
+                            var lo = wires(w)
+                            println(s"lo = ${lo.toBinaryString}")
+                            hi = hi & 0xffff0000
+                            lo = lo & 0x0000ffff
+                            println(s"hi = ${hi.toBinaryString}")
+                            println(s"lo = ${lo.toBinaryString}")
+                            hi = hi << 16
+                            println(s"hi = ${hi.toBinaryString}")
+                            wires(w) = hi | lo
+                            println(s"wires(x) = ${wires(w).toBinaryString}")
+                        }
                         case _ => ???
                 }
-                case notRE(op, r, p, w) => wires(w) = -wires(r) - 1  // https://en.wikipedia.org/wiki/Bitwise_operation#NOT
+                case notRE(op, r, p, w) => {
+                    println("NOT")
+                    println(s"wires(r) = ${wires(r).toBinaryString}")
+                    wires(w) = ~wires(r) & 0x0000ffff  // mask off high 16 bits
+                    println(s"wires(w) = ${wires(w).toBinaryString}")
+                }
                 case _ => None
 
         for (w <- wires) do
