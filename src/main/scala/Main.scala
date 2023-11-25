@@ -1,7 +1,7 @@
 import java.time.ZonedDateTime
 
 @main
-def main(): Unit = {
+def Main(): Unit = {
 
     // for each day's puzzle, create an instance of class and supply an
     // input file type, called runType:
@@ -10,7 +10,7 @@ def main(): Unit = {
 
     // Which day's puzzle to run?
     val day = 7
-    val runType = 1
+    val runType = 2
 
     // Implement each day's puzzle
     val d7 = Day07(runType)
@@ -25,14 +25,14 @@ def main(): Unit = {
     println(s"Begin: ${ZonedDateTime.now()}")
 
     day match {
-        case 1 => d1.run
-        case 2 => d2.run
-        case 3 => d3.run
-        case 4 => d4.run
-        case 5 => d5.run
-        case 6 => d6.run
-        case 7 => d7.run
-        case _ => println("Error day does not match with a runner")
+        case 1 => d1.run()
+        case 2 => d2.run()
+        case 3 => d3.run()
+        case 4 => d4.run()
+        case 5 => d5.run()
+        case 6 => d6.run()
+        case 7 => d7.run()
+        case _ => println("Error day does not match with a class")
     }
 
     println(s"\nEnd: ${ZonedDateTime.now()}")

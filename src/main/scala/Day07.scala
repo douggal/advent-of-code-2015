@@ -12,8 +12,7 @@ class Day07:
 
     var title: String = "Advent of Code 2015"
     var runType: Int = 1 // Default to test data
-
-    def run = Day07.runPuzzle(runType)
+    def run():Unit = Day07.runPuzzle(runType)
 
     override def toString: String = s"Class ${Day07.puzzleTitle}"
 
@@ -66,13 +65,21 @@ object Day07 {
         println(s"  Each line is a: ${input.head.getClass}")
         println(s"  Number lines: ${input.length}")
         println(s"  Number items per line: ${input.head.count(_ => true)}")
-        println(s"  First line: ${input.head.take(72)}")
+        println(s"  First line (up to 72 chars): ${input.head.take(72)}")
         if (input.size > 1)
             println(s"  Last line: ${input.last}")
         println("End QC on input file\n")
 
         // Common to both parts
 
+        // Note 1: bitwise operators are defined on Int and not available for Short
+        //
+        // Note 2: Scala does not have an unsigned int.  Discussion and display method here:
+        // https://stackoverflow.com/questions/21212993/unsigned-variables-in-scala?noredirect=1&lq=1
+        // one reply suggests up convert to a Long for display...
+        // Convert it to the equivalent Scala BigInt
+        def asUnsigned(unsignedInt: Int) =
+            (BigInt(unsignedInt >>> 1) << 1) + (unsignedInt & 1)
 
         // ----------
         //  Part One
@@ -80,7 +87,89 @@ object Day07 {
         println(s"Part 1: In little Bobby's kit's instructions booklet (provided as your puzzle input), what signal is ultimately provided to wire a?")
         val p1T0 = Instant.now()
 
+        val circuit = scala.collection.mutable.Map[String, Int]()
+        val waitList = scala.collection.mutable.ArrayBuffer[String]()
 
+        // 123 -> x
+        val assignValueRE = raw"([0-9]+) (->) ([a-z]+)".r
+
+        // x AND y -> d
+        val operationRE = raw"([a-z]+) (AND|OR|) ([a-z]+) (->) ([a-z]+)".r
+
+        // x LSHIFT 2 -> d
+        val shiftRE = raw"([a-z]+) (LSHIFT|RSHIFT) ([1-9]+) (->) ([a-z]+)".r
+
+        // NOT x -> h
+        val notRE = raw"(NOT) ([a-z]+) (->) ([a-z]+)".r
+
+        // p = the thin arrow "->"
+        for (line <- input)
+            waitList += line
+            val instructions = waitList.map(x => x)
+            for li <- instructions do
+                val results = li match
+                    case assignValueRE(v, p, w) =>
+                        circuit(w) = v.toInt
+                    case operationRE(l, op, r, p, w) =>
+                       if circuit.contains(l) && circuit.contains(r) then
+                           op match
+                               case "AND" => circuit(w) = circuit(l) & circuit(r)
+                               case "OR" => circuit(w) = circuit(l) | circuit(r)
+                               case _ => ???
+                           waitList -= li
+                    case shiftRE(l, op, r, p, w) => {
+                        if circuit.contains(l) && circuit.contains(r) then
+                            op match
+                                case "LSHIFT" => {
+                                    println("LSHIFT")
+                                    // println(s"circuit(l) = ${circuit(l).toBinaryString}")
+                                    circuit(w) = circuit(l) << r.toInt
+                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                    // move high 16 bits to right side of the lower 16 bits
+                                    var hi = circuit(w)
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    var lo = circuit(w)
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    hi = hi & 0xffff0000
+                                    lo = lo & 0x0000ffff
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    //hi = hi << 16
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    circuit(w) = lo | hi
+                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                }
+                                case "RSHIFT" => {
+                                    println("RSHIFT")
+                                    // println(s"circuit(l) = ${circuit(l).toBinaryString}")
+                                    circuit(w) = circuit(l) >>> r.toInt // unsigned shift right
+                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                                    // move high 16 bits to right side of the lower 16 bits
+                                    var hi = circuit(w)
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    var lo = circuit(w)
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    hi = hi & 0xffff0000
+                                    lo = lo & 0x0000ffff
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    circuit(w) = hi | lo
+                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                }
+                                case _ => ???
+                            waitList -= li
+                    }
+                    case notRE(op, r, p, w) =>
+                        if circuit.contains(r) then
+                            println("NOT")
+                            // println(s"circuit(r) = ${circuit(r).toBinaryString}")
+                            circuit(w) = ~circuit(r) & 0x0000ffff  // mask off high 16 bits!
+                            // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                        waitList -= li;
+                    case _ => None
+
+        for (w <- circuit) do
+            println(s"${w._1}: ${asUnsigned(w._2)}")
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
@@ -100,4 +189,5 @@ object Day07 {
         // errata...for visualation with Excel chart
 
     }
+
 }
