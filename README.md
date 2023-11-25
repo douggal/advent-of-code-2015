@@ -102,6 +102,7 @@ Part 2 run time approx 239 milliseconds
 
 #### Day 7
 
+- DNF
 - Did not realize at first bit-width of Scala Int is 32, and was surprised bitwise ops are not supported on Short when I tried to use Short
 - The NOT operation fooled me.  Didn't realize I had to mask off the high 16 bits.
 - Refactor again, this time for simplicity

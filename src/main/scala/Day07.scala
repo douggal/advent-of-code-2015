@@ -87,7 +87,8 @@ object Day07 {
         println(s"Part 1: In little Bobby's kit's instructions booklet (provided as your puzzle input), what signal is ultimately provided to wire a?")
         val p1T0 = Instant.now()
 
-        val wires = scala.collection.mutable.Map[String, Int]()
+        val circuit = scala.collection.mutable.Map[String, Int]()
+        val waitList = scala.collection.mutable.ArrayBuffer[String]()
 
         // 123 -> x
         val assignValueRE = raw"([0-9]+) (->) ([a-z]+)".r
@@ -103,65 +104,71 @@ object Day07 {
 
         // p = the thin arrow "->"
         for (line <- input)
-            val results = line match
-                case assignValueRE(v, p, w) => wires(w) = v.toInt
-                case operationRE(l, op, r, p, w) => {
-                    op match
-                        case "AND" => wires(w) = wires(l) & wires(r)
-                        case "OR" => wires(w) = wires(l) | wires(r)
-                        case _ => ???
-                }
-                case shiftRE(l, op, r, p, w) => {
-                    op match
-                        case "LSHIFT" => {
-                            println("LSHIFT")
-                            println(s"wires(l) = ${wires(l).toBinaryString}")
-                            wires(w) = wires(l) << r.toInt
-                            println(s"wires(x) = ${wires(w).toBinaryString}")
-                            // move high 16 bits to right side of the lower 16 bits
-                            var hi = wires(w)
-                            println(s"hi = ${hi.toBinaryString}")
-                            var lo = wires(w)
-                            println(s"lo = ${lo.toBinaryString}")
-                            hi = hi & 0xffff0000
-                            lo = lo & 0x0000ffff
-                            println(s"hi = ${hi.toBinaryString}")
-                            println(s"lo = ${lo.toBinaryString}")
-                            hi = hi << 16
-                            println(s"hi = ${hi.toBinaryString}")
-                            wires(w) = lo | hi
-                            println(s"wires(x) = ${wires(w).toBinaryString}")
-                        }
-                        case "RSHIFT" => {
-                            println("RSHIFT")
-                            println(s"wires(l) = ${wires(l).toBinaryString}")
-                            wires(w) = wires(l) >>> r.toInt // unsigned shift right
-                            println(s"wires(w) = ${wires(w).toBinaryString}")
-                            // move high 16 bits to right side of the lower 16 bits
-                            var hi = wires(w)
-                            println(s"hi = ${hi.toBinaryString}")
-                            var lo = wires(w)
-                            println(s"lo = ${lo.toBinaryString}")
-                            hi = hi & 0xffff0000
-                            lo = lo & 0x0000ffff
-                            println(s"hi = ${hi.toBinaryString}")
-                            println(s"lo = ${lo.toBinaryString}")
-                            hi = hi << 16
-                            println(s"hi = ${hi.toBinaryString}")
-                            wires(w) = hi | lo
-                            println(s"wires(x) = ${wires(w).toBinaryString}")
-                        }
-                        case _ => ???
-                }
-                case notRE(op, r, p, w) => {
-                    println("NOT")
-                    println(s"wires(r) = ${wires(r).toBinaryString}")
-                    wires(w) = ~wires(r) & 0x0000ffff  // mask off high 16 bits
-                    println(s"wires(w) = ${wires(w).toBinaryString}")
-                }
-                case _ => None
+            waitList += line
+            val instructions = waitList.map(x => x)
+            for li <- instructions do
+                val results = li match
+                    case assignValueRE(v, p, w) =>
+                        circuit(w) = v.toInt
+                    case operationRE(l, op, r, p, w) =>
+                       if circuit.contains(l) && circuit.contains(r) then
+                           op match
+                               case "AND" => circuit(w) = circuit(l) & circuit(r)
+                               case "OR" => circuit(w) = circuit(l) | circuit(r)
+                               case _ => ???
+                           waitList -= li
+                    case shiftRE(l, op, r, p, w) => {
+                        if circuit.contains(l) && circuit.contains(r) then
+                            op match
+                                case "LSHIFT" => {
+                                    println("LSHIFT")
+                                    // println(s"circuit(l) = ${circuit(l).toBinaryString}")
+                                    circuit(w) = circuit(l) << r.toInt
+                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                    // move high 16 bits to right side of the lower 16 bits
+                                    var hi = circuit(w)
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    var lo = circuit(w)
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    hi = hi & 0xffff0000
+                                    lo = lo & 0x0000ffff
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    //hi = hi << 16
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    circuit(w) = lo | hi
+                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                }
+                                case "RSHIFT" => {
+                                    println("RSHIFT")
+                                    // println(s"circuit(l) = ${circuit(l).toBinaryString}")
+                                    circuit(w) = circuit(l) >>> r.toInt // unsigned shift right
+                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                                    // move high 16 bits to right side of the lower 16 bits
+                                    var hi = circuit(w)
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    var lo = circuit(w)
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    hi = hi & 0xffff0000
+                                    lo = lo & 0x0000ffff
+                                    // println(s"hi = ${hi.toBinaryString}")
+                                    // println(s"lo = ${lo.toBinaryString}")
+                                    circuit(w) = hi | lo
+                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                }
+                                case _ => ???
+                            waitList -= li
+                    }
+                    case notRE(op, r, p, w) =>
+                        if circuit.contains(r) then
+                            println("NOT")
+                            // println(s"circuit(r) = ${circuit(r).toBinaryString}")
+                            circuit(w) = ~circuit(r) & 0x0000ffff  // mask off high 16 bits!
+                            // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                        waitList -= li;
+                    case _ => None
 
-        for (w <- wires) do
+        for (w <- circuit) do
             println(s"${w._1}: ${asUnsigned(w._2)}")
 
         val delta1 = Duration.between(p1T0, Instant.now())
