@@ -84,7 +84,7 @@ object Day07 {
         // ----------
         //  Part One
         // ----------
-        println(s"Part 1: In little Bobby's kit's instructions booklet (provided as your puzzle input), what signal is ultimately provided to wire a?")
+        println(s"Part 1: In little Bobby's kit's instructions booklet what signal is ultimately provided to wire a?")
         val p1T0 = Instant.now()
 
         val circuit = scala.collection.mutable.Map[String, Int]()
@@ -117,7 +117,7 @@ object Day07 {
                         waitList -= li
                     case copyRegisterRE(l, p, w) =>
                         if circuit.contains(l) then
-                            circuit(w) = l.toInt
+                            circuit(w) = circuit(l)
                             waitList -= li
                     case operationRE(l, op, r, p, w) =>
                        if circuit.contains(l) && circuit.contains(r) then
@@ -137,7 +137,7 @@ object Day07 {
                         if circuit.contains(l) then
                             op match
                                 case "LSHIFT" => {
-                                    println("LSHIFT")
+                                    // println("LSHIFT")
                                     // println(s"circuit(l) = ${circuit(l).toBinaryString}")
                                     val x = circuit(l) << r.toInt
                                     // println(s"x = ${circuit(w).toBinaryString}")
@@ -150,7 +150,7 @@ object Day07 {
                                     // println(s"circuit(w) = ${circuit(w).toBinaryString}")
                                 }
                                 case "RSHIFT" => {
-                                    println("RSHIFT")
+                                    // println("RSHIFT")
                                     // println(s"circuit(l) = ${circuit(l).toBinaryString}")
                                     val x = circuit(l) >>> r.toInt // unsigned shift right
                                     // println(s"x = ${circuit(w).toBinaryString}")
@@ -174,8 +174,9 @@ object Day07 {
                         waitList -= li;
                     case _ => println(s"FAIL: $li")
 
-        for (w <- circuit) do
-            println(s"${w._1}: ${asUnsigned(w._2)}")
+        val keys = circuit.keys.toVector.sortWith(_ < _)
+        for (k <- keys) do
+            println(s"wire $k: ${asUnsigned(circuit(k))}")
 
         val delta1 = Duration.between(p1T0, Instant.now())
         println(s"Part 1 run time approx ${delta1.toMillis} milliseconds\n")
