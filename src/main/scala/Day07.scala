@@ -91,10 +91,14 @@ object Day07 {
         val waitList = scala.collection.mutable.ArrayBuffer[String]()
 
         // 123 -> x
+        //  lx -> a
         val assignValueRE = raw"([0-9]+) (->) ([a-z]+)".r
+        val copyRegisterRE = raw"([a-z]+) (->) ([a-z]+)".r
 
         // x AND y -> d
-        val operationRE = raw"([a-z]+) (AND|OR|) ([a-z]+) (->) ([a-z]+)".r
+        // 1 AND r -> s
+        val operationRE = raw"([a-z]+) (AND|OR) ([a-z]+) (->) ([a-z]+)".r
+        val operationFixedRE = raw"([1-9]+) (AND|OR) ([a-z]+) (->) ([a-z]+)".r
 
         // x LSHIFT 2 -> d
         val shiftRE = raw"([a-z]+) (LSHIFT|RSHIFT) ([1-9]+) (->) ([a-z]+)".r
@@ -110,6 +114,11 @@ object Day07 {
                 val results = li match
                     case assignValueRE(v, p, w) =>
                         circuit(w) = v.toInt
+                        waitList -= li
+                    case copyRegisterRE(l, p, w) =>
+                        if circuit.contains(l) then
+                            circuit(w) = l.toInt
+                            waitList -= li
                     case operationRE(l, op, r, p, w) =>
                        if circuit.contains(l) && circuit.contains(r) then
                            op match
@@ -117,56 +126,53 @@ object Day07 {
                                case "OR" => circuit(w) = circuit(l) | circuit(r)
                                case _ => ???
                            waitList -= li
+                    case operationFixedRE(l, op, r, p, w) =>
+                        if circuit.contains(r) then
+                            op match
+                                case "AND" => circuit(w) = l.toInt & circuit(r)
+                                case "OR" => circuit(w) = l.toInt | circuit(r)
+                                case _ => ???
+                            waitList -= li
                     case shiftRE(l, op, r, p, w) => {
-                        if circuit.contains(l) && circuit.contains(r) then
+                        if circuit.contains(l) then
                             op match
                                 case "LSHIFT" => {
                                     println("LSHIFT")
                                     // println(s"circuit(l) = ${circuit(l).toBinaryString}")
-                                    circuit(w) = circuit(l) << r.toInt
-                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                    val x = circuit(l) << r.toInt
+                                    // println(s"x = ${circuit(w).toBinaryString}")
                                     // move high 16 bits to right side of the lower 16 bits
-                                    var hi = circuit(w)
-                                    // println(s"hi = ${hi.toBinaryString}")
-                                    var lo = circuit(w)
-                                    // println(s"lo = ${lo.toBinaryString}")
-                                    hi = hi & 0xffff0000
-                                    lo = lo & 0x0000ffff
+                                    val hi = x & 0xffff0000
+                                    val lo = x & 0x0000ffff
                                     // println(s"hi = ${hi.toBinaryString}")
                                     // println(s"lo = ${lo.toBinaryString}")
-                                    //hi = hi << 16
-                                    // println(s"hi = ${hi.toBinaryString}")
                                     circuit(w) = lo | hi
-                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
                                 }
                                 case "RSHIFT" => {
                                     println("RSHIFT")
                                     // println(s"circuit(l) = ${circuit(l).toBinaryString}")
-                                    circuit(w) = circuit(l) >>> r.toInt // unsigned shift right
-                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
-                                    // move high 16 bits to right side of the lower 16 bits
-                                    var hi = circuit(w)
-                                    // println(s"hi = ${hi.toBinaryString}")
-                                    var lo = circuit(w)
-                                    // println(s"lo = ${lo.toBinaryString}")
-                                    hi = hi & 0xffff0000
-                                    lo = lo & 0x0000ffff
+                                    val x = circuit(l) >>> r.toInt // unsigned shift right
+                                    // println(s"x = ${circuit(w).toBinaryString}")
+                                    // move high 16 bits to left side of the lower 16 bits
+                                    val hi = x & 0xffff0000
+                                    val lo = x & 0x0000ffff
                                     // println(s"hi = ${hi.toBinaryString}")
                                     // println(s"lo = ${lo.toBinaryString}")
                                     circuit(w) = hi | lo
-                                    // println(s"circuit(x) = ${circuit(w).toBinaryString}")
+                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
                                 }
                                 case _ => ???
                             waitList -= li
                     }
                     case notRE(op, r, p, w) =>
                         if circuit.contains(r) then
-                            println("NOT")
+                            // println("NOT")
                             // println(s"circuit(r) = ${circuit(r).toBinaryString}")
-                            circuit(w) = ~circuit(r) & 0x0000ffff  // mask off high 16 bits!
+                            circuit(w) = ~circuit(r) & 0x0000ffff  // NOT, then must mask out the high 16 bits!
                             // println(s"circuit(w) = ${circuit(w).toBinaryString}")
                         waitList -= li;
-                    case _ => None
+                    case _ => println(s"FAIL: $li")
 
         for (w <- circuit) do
             println(s"${w._1}: ${asUnsigned(w._2)}")

@@ -14,9 +14,7 @@
             <option value="$PROJECT_DIR$/project" />
           </set>
         </option>
-        <option name="sbtVersion" value="1.9.4" />
       </SbtProjectSettings>
     </option>
-    <option name="sbtOptions" value="-Vprofile-length 5" />
   </component>
 </project>
