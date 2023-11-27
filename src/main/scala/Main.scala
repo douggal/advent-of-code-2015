@@ -8,18 +8,20 @@ def Main(): Unit = {
     // runType = 1 for test data
     //         = 2 for real data
 
+    val title = "Advent of Code 2015"
+    val runType = 2 // Default to type =1, the test data
+
     // Which day's puzzle to run?
     val day = 7
-    val runType = 2
 
     // Implement each day's puzzle
-    val d7 = Day07(runType)
-    val d6 = Day06(runType)
-    val d5 = Day05("AoC 2015 Day 5", runType)
-    val d4 = Day04("AoC 2015 Day 4", runType)
-    val d3 = Day03("AoC 2015 Day 3", runType)
-    val d2 = Day02("AoC 2015 Day 2", runType)
-    val d1 = Day01("AoC 2015 Day 1", runType)
+    val d7 = Day07(s"$title Day 7", runType)
+    val d6 = Day06(s"$title Day 6", runType)
+    val d5 = Day05(s"$title Day 5", runType)
+    val d4 = Day04(s"$title Day 4", runType)
+    val d3 = Day03(s"$title Day 3", runType)
+    val d2 = Day02(s"$title Day 2", runType)
+    val d1 = Day01(s"$title Day 1", runType)
 
     // Run the selected day's puzzle
     println(s"Begin: ${ZonedDateTime.now()}")

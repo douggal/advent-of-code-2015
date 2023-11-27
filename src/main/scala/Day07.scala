@@ -8,17 +8,17 @@ import scala.collection.mutable.ArrayBuffer
  * Defines a class, its companion object and runner method for
  * the AoC Day 07 puzzles.
  */
-class Day07:
+class Day07 private (val title: String, val runType: Int ):
 
-    var title: String = "Advent of Code 2015"
-    var runType: Int = 1 // Default to test data
+    //var title: String = "Advent of Code 2015"
+    //var runType: Int = 1 // Default to test data
     def run():Unit = Day07.runPuzzle(runType)
 
     override def toString: String = s"Class ${Day07.puzzleTitle}"
 
 end Day07
 
-object Day07 {
+object Day07:
 
     // created 10/21/2023
     // https://adventofcode.com/2015/day/7
@@ -29,19 +29,15 @@ object Day07 {
     private val testData: String = s"${day}-test.txt"
     private val realData: String = s"${day}-input.txt"
 
+    // Factory methods
     // a one-arg constructor
     def apply(runType: Int): Day07 = {
-        var p = new Day07()
-        p.runType = runType
-        p
+        new Day07("AoC", runType)
     }
 
     // a two-arg constructor
     def apply(title: String, runType: Int): Day07 = {
-        var p = new Day07()
-        p.title = title
-        p.runType = runType
-        p
+        new Day07(title, runType)
     }
 
     private def runPuzzle(runType: Int): Unit = {
@@ -50,12 +46,12 @@ object Day07 {
         println(s"--- $puzzleTitle ---\n")
 
         // Read the puzzle input data file
+        val filename = if (runType == 1) testData else realData
         print("Attempting to read input data file using ")
-        if (runType == 1)
+        if (runType == 1) then
             println("TEST DATA ... ")
         else
             println("REAL INPUT DATA ...")
-        val filename = if (runType == 1) testData else realData
 
         // simple text file read:  Jan-Pieter van den Heuvel - Saving Christmas Using Scala  https://www.youtube.com/watch?v=tHU36gQ5iAI
         val input = Source.fromResource(filename).getLines().toVector
@@ -65,10 +61,10 @@ object Day07 {
         println(s"  Each line is a: ${input.head.getClass}")
         println(s"  Number lines: ${input.length}")
         println(s"  Number items per line: ${input.head.count(_ => true)}")
-        println(s"  First line (up to 72 chars): ${input.head.take(72)}")
-        if (input.size > 1)
+        println(s"  First line: ${input.head}")
+        if (input.size > 1) then
             println(s"  Last line: ${input.last}")
-        println("End QC on input file\n")
+        println
 
         // Common to both parts
 
@@ -106,73 +102,85 @@ object Day07 {
         // NOT x -> h
         val notRE = raw"(NOT) ([a-z]+) (->) ([a-z]+)".r
 
-        // p = the thin arrow "->"
+        // p = produces - the thin arrow "->" in data inputs
         for (line <- input)
+            // add instruction to waitlist
             waitList += line
-            val instructions = waitList.map(x => x)
-            for li <- instructions do
-                val results = li match
-                    case assignValueRE(v, p, w) =>
-                        circuit(w) = v.toInt
-                        waitList -= li
-                    case copyRegisterRE(l, p, w) =>
-                        if circuit.contains(l) then
-                            circuit(w) = circuit(l)
+
+            // for each instruction, process it if possible
+            // if processed remove from wait list
+            // keep processing until have assigned values to all possible instructions on wait list
+            var keepGoing = true
+            while keepGoing do
+                // make a copy of wait list (can't modify loop counter)
+                val instructions = waitList.map(x => x)
+                val c = waitList.size
+                for li <- instructions do
+                    val results = li match
+                        case assignValueRE(v, p, w) =>
+                            circuit(w) = v.toInt
                             waitList -= li
-                    case operationRE(l, op, r, p, w) =>
-                       if circuit.contains(l) && circuit.contains(r) then
-                           op match
-                               case "AND" => circuit(w) = circuit(l) & circuit(r)
-                               case "OR" => circuit(w) = circuit(l) | circuit(r)
-                               case _ => ???
-                           waitList -= li
-                    case operationFixedRE(l, op, r, p, w) =>
-                        if circuit.contains(r) then
-                            op match
-                                case "AND" => circuit(w) = l.toInt & circuit(r)
-                                case "OR" => circuit(w) = l.toInt | circuit(r)
-                                case _ => ???
-                            waitList -= li
-                    case shiftRE(l, op, r, p, w) => {
-                        if circuit.contains(l) then
-                            op match
-                                case "LSHIFT" => {
-                                    // println("LSHIFT")
-                                    // println(s"circuit(l) = ${circuit(l).toBinaryString}")
-                                    val x = circuit(l) << r.toInt
-                                    // println(s"x = ${circuit(w).toBinaryString}")
-                                    // move high 16 bits to right side of the lower 16 bits
-                                    val hi = x & 0xffff0000
-                                    val lo = x & 0x0000ffff
-                                    // println(s"hi = ${hi.toBinaryString}")
-                                    // println(s"lo = ${lo.toBinaryString}")
-                                    circuit(w) = lo | hi
-                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
-                                }
-                                case "RSHIFT" => {
-                                    // println("RSHIFT")
-                                    // println(s"circuit(l) = ${circuit(l).toBinaryString}")
-                                    val x = circuit(l) >>> r.toInt // unsigned shift right
-                                    // println(s"x = ${circuit(w).toBinaryString}")
-                                    // move high 16 bits to left side of the lower 16 bits
-                                    val hi = x & 0xffff0000
-                                    val lo = x & 0x0000ffff
-                                    // println(s"hi = ${hi.toBinaryString}")
-                                    // println(s"lo = ${lo.toBinaryString}")
-                                    circuit(w) = hi | lo
-                                    // println(s"circuit(w) = ${circuit(w).toBinaryString}")
-                                }
-                                case _ => ???
-                            waitList -= li
-                    }
-                    case notRE(op, r, p, w) =>
-                        if circuit.contains(r) then
-                            // println("NOT")
-                            // println(s"circuit(r) = ${circuit(r).toBinaryString}")
-                            circuit(w) = ~circuit(r) & 0x0000ffff  // NOT, then must mask out the high 16 bits!
-                            // println(s"circuit(w) = ${circuit(w).toBinaryString}")
-                        waitList -= li;
-                    case _ => println(s"FAIL: $li")
+                        case copyRegisterRE(l, p, w) =>
+                            if circuit.contains(l) then
+                                circuit(w) = circuit(l)
+                                waitList -= li
+                        case operationRE(l, op, r, p, w) =>
+                           if circuit.contains(l) && circuit.contains(r) then
+                               op match
+                                   case "AND" => circuit(w) = circuit(l) & circuit(r)
+                                   case "OR" => circuit(w) = circuit(l) | circuit(r)
+                                   case _ => ???
+                               waitList -= li
+                        case operationFixedRE(l, op, r, p, w) =>
+                            if circuit.contains(r) then
+                                op match
+                                    case "AND" => circuit(w) = l.toInt & circuit(r)
+                                    case "OR" => circuit(w) = l.toInt | circuit(r)
+                                    case _ => ???
+                                waitList -= li
+                        case shiftRE(l, op, r, p, w) => {
+                            if circuit.contains(l) then
+                                op match
+                                    case "LSHIFT" => {
+                                        // println("LSHIFT")
+                                        // println(s"circuit(l) = ${circuit(l).toBinaryString}")
+                                        val x = circuit(l) << r.toInt
+                                        // println(s"x = ${circuit(w).toBinaryString}")
+                                        // move high 16 bits to right side of the lower 16 bits
+                                        val hi = x & 0xffff0000
+                                        val lo = x & 0x0000ffff
+                                        // println(s"hi = ${hi.toBinaryString}")
+                                        // println(s"lo = ${lo.toBinaryString}")
+                                        circuit(w) = lo | hi
+                                        // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                                    }
+                                    case "RSHIFT" => {
+                                        // println("RSHIFT")
+                                        // println(s"circuit(l) = ${circuit(l).toBinaryString}")
+                                        val x = circuit(l) >>> r.toInt // unsigned shift right
+                                        // println(s"x = ${circuit(w).toBinaryString}")
+                                        // move high 16 bits to left side of the lower 16 bits
+                                        val hi = x & 0xffff0000
+                                        val lo = x & 0x0000ffff
+                                        // println(s"hi = ${hi.toBinaryString}")
+                                        // println(s"lo = ${lo.toBinaryString}")
+                                        circuit(w) = hi | lo
+                                        // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                                    }
+                                    case _ => ???
+                                waitList -= li
+                        }
+                        case notRE(op, r, p, w) =>
+                            if circuit.contains(r) then
+                                // println("NOT")
+                                // println(s"circuit(r) = ${circuit(r).toBinaryString}")
+                                circuit(w) = ~circuit(r) & 0x0000ffff  // NOT, then must mask out the high 16 bits!
+                                // println(s"circuit(w) = ${circuit(w).toBinaryString}")
+                            waitList -= li;
+                        case _ =>
+                            println(s"FAIL: $li")
+                if c == waitList.size then
+                    keepGoing = false
 
         val keys = circuit.keys.toVector.sortWith(_ < _)
         for (k <- keys) do
@@ -197,4 +205,5 @@ object Day07 {
 
     }
 
-}
+end Day07
+

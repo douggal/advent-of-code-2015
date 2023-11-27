@@ -8,3 +8,7 @@ NOT x -> h
 NOT y -> i
 1 AND y -> z
 z -> zz
+af AND ah -> ai
+789 -> af
+NOT ag -> ah
+236 -> ag
